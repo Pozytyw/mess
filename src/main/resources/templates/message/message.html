@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Hello WebSocket</title>
+    <link rel="stylesheet" th:href="@{/styles/web-socket.css} ">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/scripts/web-socket.js}"></script>
+</head>
+<body>
+<div class="mainContainer">
+    <div class="friendsMenu">
+        <th:block th:each="conversation : *{conversations}">
+            <div>
+                <button th:if="${conversation.isGroup()}" class="receiver" th:value="${conversation.id}" th:text="${conversation.name}"></button>
+                <button th:unless="${conversation.isGroup()}" class="receiver" th:value="${conversation.id}">[[${conversation.getName(user)}]]</button>
+            </div>
+        </th:block>
+    </div>
+    <div class="messageBox">
+        <div id="messageArea" class="messageArea">
+            <th:block th:each="conversation : *{conversations}">
+                <div th:id="${conversation.id}" class="conv">
+                    <th:block th:each="message : ${conversation.messages}">
+                        <div th:if="${message.user_id == user.id}" class="post">
+                            <span th:text="${message.message}"></span>
+                        </div>
+                        <div th:unless="${message.user_id == user.id}" class="get">
+                            <span th:text="${message.message}"></span>
+                        </div>
+                    </th:block>
+                </div>
+            </th:block>
+        </div>
+        <div class="message">
+            <input type="text" id="message" placeholder="Type message">
+            <button id="send">-></button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

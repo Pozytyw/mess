@@ -1,0 +1,39 @@
+.friendsMenu{
+    float: left;
+    height:150px;
+    overflow-y: scroll;
+    width: 10%;
+}
+
+.messageBox{
+    float: left;
+    position: relative;
+    width: 30%;
+}
+
+.messageArea{
+    width: 100%;
+    overflow-y: scroll;
+    height: 300px;
+}
+
+messageArea *{
+    width: 100%;
+}
+
+.get{
+    text-align: left;
+}
+
+.post{
+    text-align: right;
+}
+
+.message{
+    position: absolute;
+    bottom: -10%;
+    width: 100%;
+}
+.message input{
+    width: 80%;
+}
