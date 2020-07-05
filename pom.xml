@@ -13,10 +13,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>mess</name>
 	<description>Mess project</description>
-
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
+<!--	<packaging>war</packaging>-->
 
 	<dependencies>
 		<!-- web controller dependency -->
@@ -105,6 +105,13 @@
 			<version>3.1.1-1</version>
 		</dependency>
 
+		<!--tomcat dependency-->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
+
 		<!-- test dependency -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -124,14 +131,4 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
-
 </project>

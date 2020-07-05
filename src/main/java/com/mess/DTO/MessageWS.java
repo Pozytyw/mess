@@ -1,5 +1,8 @@
 package com.mess.DTO;
 
+import org.springframework.web.util.HtmlUtils;
+import org.unbescape.html.HtmlEscape;
+
 public class MessageWS {
     private String sender;
     private String conversationId;
@@ -28,7 +31,7 @@ public class MessageWS {
     }
 
     public String getMessage() {
-        return message;
+        return HtmlUtils.htmlEscape(message);
     }
 
     public void setMessage(String message) {

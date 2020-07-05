@@ -51,17 +51,19 @@ $(window).on('load', function () {
     //connect to websocket
     connect();
 
-    $( ".receiver" ).css("background-color", "white");
-
     //set click event method for elem with id #send
-    $( "#send" ).click(function() { sendMessage(); });
-    //set click event method for elem with class .receiver
-    $( ".receiver" ).click(function() {
-        //set conversationId
-        conversationId = $(this).val();
+    $( "#send" ).click(function() {
+        sendMessage();
+        ti
+    });
 
-        $( ".receiver" ).css("background-color", "white")
-        $(this).css("background-color", "green");
+    //set click event method for elem with class .receiver
+    $( ".desc" ).click(function(event) {
+        //set conversationId
+        conversationId = $(this).find(".receiver")[0].id;
+
+        $( ".desc" ).css("border", "none")//unselect
+        $(this).css("border", "solid 2.5px black");//selected
 
         //hidden all conversation except selected conversation
         messageArea.find("div[class='conv']").hide()
@@ -69,6 +71,13 @@ $(window).on('load', function () {
 
         //scroll message area to end
         messageArea.scrollTop(messageArea[0].scrollHeight);
+    });
+
+    //send message if keypress on message box
+    $( "#message" ).keypress(function( event ){
+        if( event.which == 13 ){
+            sendMessage();
+        }
     });
 
     //click first receiver button

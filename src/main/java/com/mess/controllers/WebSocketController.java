@@ -14,7 +14,7 @@ import java.util.Calendar;
 import java.util.List;
 
 @Controller
-public class SocketController {
+public class WebSocketController {
     @Autowired
     SimpMessagingTemplate messagingTemplate;
 
@@ -65,7 +65,7 @@ public class SocketController {
             if(email.equals(name))
                 continue;//skip if email equal auth name
             String token = UsersToken.usersToken.get(email);
-            if(token.isEmpty())
+            if(token == null)
                 continue;//ship if user isn't login
             String destination = "/getter/" + token + "/message";
             messagingTemplate.convertAndSend(destination, messageWS);

@@ -1,39 +1,225 @@
-.friendsMenu{
-    float: left;
-    height:150px;
-    overflow-y: scroll;
-    width: 10%;
+/*Color patterns*/
+:root {
+    --main-color: #040032;
+    --nav-color: #5a687c;
+    --message-color: #222b3f;
+    --elem-color: #c1cdd6;
+    --cloud-color: #001338;
+    --text-color: #eff0eb;
 }
 
-.messageBox{
-    float: left;
+::-webkit-scrollbar{
+    width: 5px;
+    background-color: transparent;
+}
+::-webkit-scrollbar-thumb{
+    background-color: var(--elem-color);
+    border-radius: 15px;
+}
+
+body{
+    background: radial-gradient(circle, rgba(4,0,50,0.90) 0%, rgba(39,31,133,0.90) 100%);
+    color: var(--text-color);
+}
+
+body *{
+    margin: 0;
+    padding: 0;
+}
+
+input:focus{
+    outline: none !important;
+}
+
+.mainContainer{
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 5%;
+    height: 80vh;
+}
+
+.navbar{
     position: relative;
-    width: 30%;
+    z-index: 1;
+    width: 23%;
+    height: 100%;
+    float: left;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    background: radial-gradient(circle, rgba(90,104,124,1) 0%, rgba(74,86,103,1) 100%);
+    box-shadow: -10px -5px 10px 0px rgba(0,0,0,0.50);
 }
 
-.messageArea{
+.navbar .search{
+    position: relative;
     width: 100%;
+    height: 4vh;
+    margin-top: 1.75vh;
+}
+
+.search .find{
+    position: absolute;
+    width: 97.50%;
+    height: 5vh;
+    margin-left: 1.25%;
+    transform: translate(-1px,-5px);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: solid 1px rgba(0,0,0,0.25);
+    border-top: none;
+    z-index: 2;
+    visibility: hidden;
+    background-color: var(--elem-color);
+}
+
+.search input{
+    width: 87.5%;
+    margin-left: 1.25%;
+    height: 95%;
+    border: none;
+    padding: 1.5% 5% 1.5% 5%;
+    transform: translate(-1px);
+    border-radius: 5px;
+    border: solid 1px rgba(0,0,0,0.25);
+    background-color: var(--elem-color);
+}
+
+.navbar .friendsBar{
     overflow-y: scroll;
-    height: 300px;
+    width: 100%;
+    height: 72vh;
+    margin-top: 2.25vh;
+}
+
+.profile{
+    position: relative;
+    width: 98%;
+    height: 7.68vh;
+    margin-bottom: 3.5%;
+}
+
+.profile .icon{
+    position: absolute;
+    overflow: hidden;
+    width: 7vh;
+    height: 7vh;
+    border: solid 0.25vh rgba(90,104,124,0.25);
+    margin-top: 0.34vh;
+    transform: translate(-50%);
+    border-radius: 25%;
+    padding-right: 25%;
+    z-index: 1;
+    background-color: var(--elem-color);
+}
+.icon svg{
+    position: absolute;
+    right: 0;
+    height: 7vh;
+    fill: var(--text-color);
+}
+
+.profile .desc{
+    position: absolute;
+    width: 99%;
+    height: 100%;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    z-index: 0;
+    background-color: #24408e;
+}
+
+.desc span{
+    position: absolute;
+    right: 1vh;
+    margin-top: 4vh;
+    transform: translateY(-50%);
+    background-color: inherit;
+}
+
+.content{
+    position: relative;
+    width: 73%;
+    height: 100%;
+    z-index: 0;
+    float: left;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    background-color: var(--message-color);
+    box-shadow: -5px -5px 10px 0px rgba(0,0,0,0.50);
+}
+
+.content .messageBox{
+    width: 100%;
+    height: 100%;
+}
+
+.messageBox .messageArea{
+    width: 95%;
+    height: 70vh;
+    margin-top: 3.5vh;
+    margin-left: 2.5%;
+    padding-right: 2.5%;
+    overflow-y: scroll;
 }
 
 messageArea *{
+    height: 100%;
     width: 100%;
-}
-
-.get{
-    text-align: left;
 }
 
 .post{
     text-align: right;
 }
 
-.message{
-    position: absolute;
-    bottom: -10%;
-    width: 100%;
+.post span{
+    border-top-left-radius: 15px;
 }
+
+.get span{
+    border-top-right-radius: 15px;
+}
+
+.conv span{
+    display: inline-block;
+    padding: 10px 15px 10px 15px;
+    max-width: 35%;
+    margin-bottom: 1vh;
+    background-color: var(--cloud-color);
+}
+
+.messageBox .message{
+    position relative;
+    width: 98%;
+    height: 5vh;
+    margin-top: 1vh;
+    margin-bottom: 0.25vh;
+    margin-left: 1%;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
 .message input{
-    width: 80%;
+    height: 100%;
+    width: 93%;
+    background-color: var(--elem-color);
+    padding-left: 2%;
+    border: none;
+    float: left;
+}
+
+.message #send{
+    width: 5%;
+    height: 100%;
+    background-color: var(--elem-color);
+    border: none;
+    float: left;
+}
+
+#send:focus{
+    outline: none !important;
+    box-shadow: 5px -5px 10px 0px rgba(0,0,0,0.50);
+}
+
+#send svg{
+    width: 50%;
 }

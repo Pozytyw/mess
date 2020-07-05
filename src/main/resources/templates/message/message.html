@@ -4,7 +4,6 @@
 <head>
     <title>Hello WebSocket</title>
     <link rel="stylesheet" th:href="@{/styles/web-socket.css} ">
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
@@ -12,32 +11,47 @@
 </head>
 <body>
 <div class="mainContainer">
-    <div class="friendsMenu">
-        <th:block th:each="conversation : *{conversations}">
-            <div>
-                <button th:if="${conversation.isGroup()}" class="receiver" th:value="${conversation.id}" th:text="${conversation.name}"></button>
-                <button th:unless="${conversation.isGroup()}" class="receiver" th:value="${conversation.id}">[[${conversation.getName(user)}]]</button>
-            </div>
-        </th:block>
-    </div>
-    <div class="messageBox">
-        <div id="messageArea" class="messageArea">
+    <div class="navbar">
+        <div class="search">
+            <input type="text" id="new-user" placeholder="Search: ">
+            <div class="find"></div>
+        </div>
+        <div class="friendsBar">
             <th:block th:each="conversation : *{conversations}">
-                <div th:id="${conversation.id}" class="conv">
-                    <th:block th:each="message : ${conversation.messages}">
-                        <div th:if="${message.user_id == user.id}" class="post">
-                            <span th:text="${message.message}"></span>
-                        </div>
-                        <div th:unless="${message.user_id == user.id}" class="get">
-                            <span th:text="${message.message}"></span>
-                        </div>
-                    </th:block>
+                <div class="profile">
+                    <div class="icon">
+                        <svg viewBox="-42 0 512 512.002" xmlns="http://www.w3.org/2000/svg"><path d="m210.351562 246.632812c33.882813 0 63.222657-12.152343 87.195313-36.128906 23.972656-23.972656 36.125-53.304687 36.125-87.191406 0-33.875-12.152344-63.210938-36.128906-87.191406-23.976563-23.96875-53.3125-36.121094-87.191407-36.121094-33.886718 0-63.21875 12.152344-87.191406 36.125s-36.128906 53.308594-36.128906 87.1875c0 33.886719 12.15625 63.222656 36.132812 87.195312 23.976563 23.96875 53.3125 36.125 87.1875 36.125zm0 0"/><path d="m426.128906 393.703125c-.691406-9.976563-2.089844-20.859375-4.148437-32.351563-2.078125-11.578124-4.753907-22.523437-7.957031-32.527343-3.308594-10.339844-7.808594-20.550781-13.371094-30.335938-5.773438-10.15625-12.554688-19-20.164063-26.277343-7.957031-7.613282-17.699219-13.734376-28.964843-18.199219-11.226563-4.441407-23.667969-6.691407-36.976563-6.691407-5.226563 0-10.28125 2.144532-20.042969 8.5-6.007812 3.917969-13.035156 8.449219-20.878906 13.460938-6.707031 4.273438-15.792969 8.277344-27.015625 11.902344-10.949219 3.542968-22.066406 5.339844-33.039063 5.339844-10.972656 0-22.085937-1.796876-33.046874-5.339844-11.210938-3.621094-20.296876-7.625-26.996094-11.898438-7.769532-4.964844-14.800782-9.496094-20.898438-13.46875-9.75-6.355468-14.808594-8.5-20.035156-8.5-13.3125 0-25.75 2.253906-36.972656 6.699219-11.257813 4.457031-21.003906 10.578125-28.96875 18.199219-7.605469 7.28125-14.390625 16.121094-20.15625 26.273437-5.558594 9.785157-10.058594 19.992188-13.371094 30.339844-3.199219 10.003906-5.875 20.945313-7.953125 32.523437-2.058594 11.476563-3.457031 22.363282-4.148437 32.363282-.679688 9.796875-1.023438 19.964844-1.023438 30.234375 0 26.726562 8.496094 48.363281 25.25 64.320312 16.546875 15.746094 38.441406 23.734375 65.066406 23.734375h246.53125c26.625 0 48.511719-7.984375 65.0625-23.734375 16.757813-15.945312 25.253906-37.585937 25.253906-64.324219-.003906-10.316406-.351562-20.492187-1.035156-30.242187zm0 0"/></svg>
+                    </div>
+                    <div class="desc">
+                        <span th:if="${conversation.isGroup()}" class="receiver" th:id="${conversation.id}" th:text="${conversation.name}"></span>
+                        <span th:unless="${conversation.isGroup()}" class="receiver" th:id="${conversation.id}">[[${conversation.getName(user)}]]</span>
+                    </div>
                 </div>
             </th:block>
         </div>
-        <div class="message">
-            <input type="text" id="message" placeholder="Type message">
-            <button id="send">-></button>
+    </div>
+    <div class="content">
+        <div class="messageBox">
+            <div id="messageArea" class="messageArea">
+                <th:block th:each="conversation : *{conversations}">
+                    <div th:id="${conversation.id}" class="conv">
+                        <th:block th:each="message : ${conversation.messages}">
+                            <div th:if="${message.user_id == user.id}" class="post">
+                                <span th:utext="${message.message}"></span>
+                            </div>
+                            <div th:unless="${message.user_id == user.id}" class="get">
+                                <span th:utext="${message.message}"></span>
+                            </div>
+                        </th:block>
+                    </div>
+                </th:block>
+            </div>
+            <div class="message">
+                <input type="text" id="message" placeholder="Type message">
+                <button id="send">
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"> <g transform="translate(0 -1)"><g><path d="M505.275,163.43L347.737,25.584c-12.733-11.141-32.66-2.099-32.66,14.82v19.692H19.692C8.817,60.096,0,68.913,0,79.788 v393.846c0,10.876,8.817,19.692,19.692,19.692h393.846c10.876,0,19.692-8.817,19.692-19.692V256.109l72.044-63.039 C514.242,185.224,514.242,171.276,505.275,163.43z M315.077,217.709c-5.356,0.194-11.125,0.528-17.226,1.035 c-20.537,1.706-40.84,5.087-60.026,10.585c-16.385,4.695-31.284,10.718-44.401,18.198l0.279-0.59 c13.685-28.781,35.384-52.467,63.503-71.749c17.958-12.314,37.313-21.911,56.665-29.057c0.404-0.149,0.806-0.296,1.206-0.442 V217.709z M393.846,453.942H39.385V99.481h275.692v4.636c-4.428,1.38-9.401,3.056-14.847,5.067 c-22.225,8.206-44.449,19.225-65.297,33.522c-57.873,39.685-94.169,96.648-97.072,172.643c-0.858,22.45,30.508,28.595,38.185,7.48 c9.676-26.615,35.024-44.863,72.629-55.639c16.477-4.722,34.3-7.69,52.437-9.196c4.934-0.41,9.607-0.691,13.966-0.869v58.971 c0,16.919,19.927,25.961,32.66,14.82l46.109-40.346V453.942z M400.571,232.353C400.571,232.353,400.571,232.353,400.571,232.353 l-46.11,40.346v-35.368V119.177V83.801l107.942,94.449L400.571,232.353z"/></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+                </button>
+            </div>
         </div>
     </div>
 </div>
