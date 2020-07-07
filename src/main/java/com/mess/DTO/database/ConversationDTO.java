@@ -1,4 +1,4 @@
-package com.mess.DTO;
+package com.mess.DTO.database;
 
 import javax.persistence.*;
 import java.util.*;
@@ -22,7 +22,7 @@ public class ConversationDTO {
     @OrderBy(value="send_date")
     private Set<MessageDTO> messages;
 
-    @ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany(cascade=CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinTable(name="conv_user", joinColumns=@JoinColumn(name="conv_id"), inverseJoinColumns=@JoinColumn(name="user_id"))
     private Set<UserDTO> users;
 

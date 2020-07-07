@@ -1,4 +1,4 @@
-package com.mess.DTO;
+package com.mess.DTO.database;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -25,6 +27,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findUserByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public List<UserDTO> findUserByEmails(String[] emails) {
+        return userRepository.findUserByEmails(emails);
+    }
+
+    @Override
+    public Optional<UserDTO> findUserById(Long id){
+        return userRepository.findById(id);
     }
 
     @Override

@@ -1,11 +1,11 @@
-package com.mess.DTO;
+package com.mess.DTO.database;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 public class UserForm {
 
-    @Email(message = "Email should be vald")
+    @Email(message = "Email should be valid")
     private String email;
     private String username;
 

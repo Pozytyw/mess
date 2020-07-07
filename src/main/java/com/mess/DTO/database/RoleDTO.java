@@ -1,4 +1,4 @@
-package com.mess.DTO;
+package com.mess.DTO.database;
 
 import javax.persistence.*;
 

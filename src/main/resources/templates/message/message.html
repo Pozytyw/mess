@@ -13,8 +13,11 @@
 <div class="mainContainer">
     <div class="navbar">
         <div class="search">
-            <input type="text" id="new-user" placeholder="Search: ">
-            <div class="find"></div>
+            <form autocomplete="off">
+                <input type="text" id="search" placeholder="Search: ">
+            </form>
+            <div class="find">
+            </div>
         </div>
         <div class="friendsBar">
             <th:block th:each="conversation : *{conversations}">

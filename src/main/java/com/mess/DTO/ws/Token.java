@@ -1,12 +1,10 @@
-package com.mess.websocket;
+package com.mess.DTO.ws;
 
-import org.springframework.messaging.Message;
-
-import java.util.List;
 
 public class Token {
     private String token;
     private String email;
+
     public Token() {
 
     }

@@ -1,7 +1,5 @@
-package com.mess.DTO;
-
+package com.mess.DTO.ws;
 import org.springframework.web.util.HtmlUtils;
-import org.unbescape.html.HtmlEscape;
 
 public class MessageWS {
     private String sender;

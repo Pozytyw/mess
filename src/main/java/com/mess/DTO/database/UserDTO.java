@@ -1,6 +1,4 @@
-package com.mess.DTO;
-
-import org.springframework.context.annotation.Configuration;
+package com.mess.DTO.database;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -27,7 +25,7 @@ public class UserDTO {
     @Column(name = "active")
     private int active;
 
-    @ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name="user_roles", joinColumns=@JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="role_id"))
     private Set<RoleDTO> roles;
 
@@ -77,10 +75,6 @@ public class UserDTO {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
 }

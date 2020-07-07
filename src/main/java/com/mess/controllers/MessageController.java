@@ -1,9 +1,9 @@
 package com.mess.controllers;
 
-import com.mess.DTO.ConvRepository;
-import com.mess.DTO.ConversationDTO;
-import com.mess.DTO.UserDTO;
-import com.mess.DTO.UserService;
+import com.mess.DTO.database.ConvRepository;
+import com.mess.DTO.database.ConversationDTO;
+import com.mess.DTO.database.UserDTO;
+import com.mess.DTO.database.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

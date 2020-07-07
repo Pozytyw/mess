@@ -1,4 +1,4 @@
-package com.mess.DTO;
+package com.mess.DTO.database;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

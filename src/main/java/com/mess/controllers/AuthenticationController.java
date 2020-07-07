@@ -1,8 +1,8 @@
 package com.mess.controllers;
 
-import com.mess.DTO.UserDTO;
-import com.mess.DTO.UserForm;
-import com.mess.DTO.UserService;
+import com.mess.DTO.database.UserDTO;
+import com.mess.DTO.database.UserForm;
+import com.mess.DTO.database.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
