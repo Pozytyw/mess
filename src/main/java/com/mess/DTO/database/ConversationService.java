@@ -9,6 +9,6 @@ public interface ConversationService {
     List<String> getEmailsByConvId(@Param("id") long id);
     List<ConversationDTO> getByUserID(@Param("id") long id);
     Optional<ConversationDTO> findByID(long id);
-    void newConv(ConversationForm conversationForm, String[] emails);
+    ConversationDTO newConv(ConversationForm conversationForm, String[] emails);
     void save(ConversationDTO conversationDTO);
 }

@@ -37,7 +37,7 @@ public class ConversationServiceImpl implements ConversationService{
     }
 
     @Override
-    public void newConv(ConversationForm conversationForm, String[] emails) {
+    public ConversationDTO newConv(ConversationForm conversationForm, String[] emails) {
 
         ConversationDTO conversationDTO = new ConversationDTO();
         conversationDTO.setName(conversationForm.getName());
@@ -48,5 +48,7 @@ public class ConversationServiceImpl implements ConversationService{
         conversationDTO.setUsers(new HashSet<UserDTO>(users));
 
         convRepository.saveAndFlush(conversationDTO);
+
+        return conversationDTO;
     }
 }

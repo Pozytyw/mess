@@ -25,13 +25,13 @@ public interface UserWSRepository extends JpaRepository<UserWS, Long> {
             "                INNER JOIN\n" +
             "            conv_user ON conv_user.conv_id = conversation.id\n" +
             "        WHERE\n" +
-            "            conv_user.user_id = 12)\n" +
+            "            conv_user.user_id = ?2)\n" +
             "        LEFT JOIN\n" +
             "    conversation ON conversation.id = conv_user.conv_id\n" +
-            "        AND conv_user.user_id != 12\n" +
+            "        AND conv_user.user_id != ?2\n" +
             "WHERE\n" +
-            "    CONCAT(users.username, email) REGEXP 'user'\n" +
-            "        AND users.id != 12\n" +
+            "    CONCAT(users.username, email) REGEXP ?1\n" +
+            "        AND users.id != ?2\n" +
             "LIMIT 5;")
     List<UserWS> findUsersByREGEX(String regex, Long id);
 }

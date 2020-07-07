@@ -14,9 +14,7 @@ import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 public class WebSocketController {
@@ -55,15 +53,32 @@ public class WebSocketController {
     @MessageMapping("/new_conv")
     public void newConv(Principal principal, Long user_id) throws Exception{
         //get names for new conversation
-        String name = principal.getName();
-        String name2 = userService.findUserById(user_id).get().getEmail();
+        String email = principal.getName();
+        String email2 = userService.findUserById(user_id).get().getEmail();
+
+        UserDTO user = userService.findUserByEmail(email);
 
         //create new conversation
         ConversationForm conversation = new ConversationForm();
         conversation.setName("talk");
         conversation.setGroup(false);
 
-        conversationService.newConv(conversation, new String[]{name , name2});
+        ConversationDTO conversationDTO = conversationService.newConv(conversation, new String[]{email , email2});
+
+        //update id
+        conversation.setId(conversationDTO.getId());
+
+        for(UserDTO userDTO : conversationDTO.getUsers()) {
+            String token = UsersToken.usersToken.get(userDTO.getEmail());
+            if(token == null)
+                continue;//ship if user isn't login
+            String destination = "/getter/new_conv/" + token;
+
+            //update name by user
+            conversation.setName(conversationDTO.getName(userDTO));//if talk set name like caller username
+
+            messagingTemplate.convertAndSend(destination, conversation);
+        }
     }
 
     @MessageMapping("/toUser")
