@@ -1,0 +1,22 @@
+/*Color patterns*/
+:root {
+    --main-color: #040032;
+    --nav-color: #5a687c;
+    --message-color: #222b3f;
+    --elem-color: #c1cdd6;
+    --cloud-color: #001338;
+    --text-color: #eff0eb;
+}
+
+body{
+    background: radial-gradient(circle, rgba(4,0,50,0.90) 0%, rgba(39,31,133,0.90) 100%);
+    color: var(--text-color);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 1.75vh;
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+        font-size: 2.5vh;
+    }
+}

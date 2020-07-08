@@ -4,12 +4,13 @@
 <head>
     <title>Sign up</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/styles/signUp.css} ">
 </head>
 <body>
-<div class="container">
+<div class="container mt-5">
     <form class="form-horizontal" role="form" method="POST" th:action="@{/signUp}" th:object="${userForm}">
         <div class="row">
             <div class="col-md-3"></div>
@@ -99,10 +100,10 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row mt-3">
             <div class="col-md-3"></div>
             <div class="col-md-6">
-                <button type="submit" class="btn btn-success"><i class="fa fa-user-plus"></i> Register</button>
+                <button type="submit" class="btn">Register</button>
             </div>
         </div>
     </form>

@@ -22,7 +22,7 @@ public class MessageController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value={"/mess"}, method = RequestMethod.GET)
+    @RequestMapping(value={"/"}, method = RequestMethod.GET)
     public ModelAndView getMessenger() {
         ModelAndView model = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

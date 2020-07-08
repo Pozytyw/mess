@@ -35,7 +35,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/home").permitAll()//home page permit all
                 .antMatchers("/login").permitAll()//login page permit all
                 .antMatchers("/signUp").permitAll()//sign up page permit all
                 .antMatchers("/scripts/**").permitAll()//files in scripts permit all
@@ -44,7 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/profile").hasAuthority("USER")//profile need authority with user role
                 .anyRequest().authenticated().and().csrf().disable()//all else request need authentications
                 .formLogin().loginPage("/login").failureUrl("/login?error=true")
-                .defaultSuccessUrl("/home")
+                .defaultSuccessUrl("/")
                 .usernameParameter("email").passwordParameter("password")
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/")
