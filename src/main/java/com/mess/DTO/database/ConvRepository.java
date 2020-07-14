@@ -37,4 +37,51 @@ public interface ConvRepository extends JpaRepository<ConversationDTO, Long> {
             , nativeQuery = true)
     List<ConversationDTO> getTalk2Users(@Param("id1") Long id1, @Param("id2") Long id2);
 
+    @Query(value =
+            "SELECT \n" +
+                    "    *\n" +
+                    "FROM\n" +
+                    "    conversation\n" +
+                    "        LEFT JOIN\n" +
+                    "    conv_user ON conv_user.conv_id = conversation.id\n" +
+                    "        AND conv_user.conv_id IN (SELECT \n" +
+                    "            id\n" +
+                    "        FROM\n" +
+                    "            conversation\n" +
+                    "                INNER JOIN\n" +
+                    "            conv_user ON conv_user.conv_id = conversation.id\n" +
+                    "        WHERE\n" +
+                    "            conv_user.user_id = :user_id\n" +
+                    "                OR conversation.id IN (SELECT \n" +
+                    "                    conversation.id\n" +
+                    "                FROM\n" +
+                    "                    conversation\n" +
+                    "                        INNER JOIN\n" +
+                    "                    conv_user ON conv_user.conv_id = conversation.id\n" +
+                    "                        AND conv_user.user_id NOT IN (SELECT \n" +
+                    "                            users.id\n" +
+                    "                        FROM\n" +
+                    "                            users\n" +
+                    "                                INNER JOIN\n" +
+                    "                            conv_user ON conv_user.user_id = users.id\n" +
+                    "                                AND conv_user.conv_id IN (SELECT \n" +
+                    "                                    conversation.id\n" +
+                    "                                FROM\n" +
+                    "                                    conversation\n" +
+                    "                                        INNER JOIN\n" +
+                    "                                    conv_user ON conv_user.conv_id = conversation.id\n" +
+                    "                                WHERE\n" +
+                    "                                    name LIKE 'talk' AND user_id = :user_id)\n" +
+                    "                        WHERE\n" +
+                    "                            users.id != :user_id)\n" +
+                    "                WHERE\n" +
+                    "                    name LIKE 'self'))\n" +
+                    "        AND conv_user.user_id != :user_id\n" +
+                    "        LEFT JOIN\n" +
+                    "    users ON users.id = conv_user.user_id\n" +
+                    "WHERE\n" +
+                    "    CONCAT(conversation.name, users.username, email) REGEXP :regexp\n" +
+                    "LIMIT 5;", nativeQuery = true)
+    List<ConversationDTO> findConversationByRegexp(@Param("regexp") String regexp, @Param("user_id") Long user_id);
+
 }

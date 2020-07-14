@@ -11,4 +11,5 @@ public interface ConversationService {
     Optional<ConversationDTO> findByID(long id);
     ConversationDTO newConv(ConversationForm conversationForm, String[] emails);
     Long save(ConversationDTO conversationDTO);
+    List<ConversationDTO> findConversationByRegexp(@Param("regexp") String regexp, @Param("user_id") Long user_id);
 }

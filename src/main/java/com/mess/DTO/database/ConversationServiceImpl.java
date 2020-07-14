@@ -1,6 +1,7 @@
 package com.mess.DTO.database;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Array;
@@ -35,6 +36,11 @@ public class ConversationServiceImpl implements ConversationService{
     public Long save(ConversationDTO conversationDTO){
         convRepository.save(conversationDTO);
         return conversationDTO.getId();
+    }
+
+    @Override
+    public List<ConversationDTO> findConversationByRegexp(@Param("regexp") String regexp, @Param("user_id") Long user_id){
+        return convRepository.findConversationByRegexp(regexp, user_id);
     }
 
     @Override

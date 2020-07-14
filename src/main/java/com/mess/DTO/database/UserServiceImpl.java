@@ -19,6 +19,9 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
 
     @Autowired
+    private ConversationServiceImpl conversationService;
+
+    @Autowired
     private Pbkdf2PasswordEncoder pbkdf2PasswordEncoder;
 
     public UserServiceImpl() {
@@ -56,10 +59,17 @@ public class UserServiceImpl implements UserService {
 
         //save user
         userRepository.save(user);
-    }
 
-    @Override
-    public List<UserDTO> findUsersByREGEX(Long id, String regex) {
-        return null;
+        //create self conversation
+        ConversationDTO conversationDTO = new ConversationDTO();
+        conversationDTO.setGroup(false);
+        conversationDTO.setName("self");
+
+        //set user
+        HashSet<UserDTO> users = new HashSet<>();
+        users.add(user);
+        conversationDTO.setUsers(users);
+        //save new conversation
+        conversationService.save(conversationDTO);
     }
 }

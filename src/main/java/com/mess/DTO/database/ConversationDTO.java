@@ -41,10 +41,12 @@ public class ConversationDTO {
     }
 
     public String getName(UserDTO user) {
+        if(this.name.equals("self")){
+            return user.getUsername();
+        }
         List<Object> users = new LinkedList<>(Arrays.asList(this.users.toArray()));
-        users.remove(user);
-        UserDTO userDTO = (UserDTO)users.get(0);
-        return userDTO.getUsername();
+        users.removeIf(userDTO -> ((UserDTO)userDTO).getId() == user.getId());
+        return ((UserDTO)users.get(0)).getUsername();
     }
 
     public void setName(String name) {

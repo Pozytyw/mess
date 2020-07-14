@@ -34,15 +34,33 @@ public class WebSocketController {
         return new Token(name, token);//return token to create unique subscriptions
     }
 
-    //search for users
+
+    //search for conversations
     @MessageMapping("/get_users")
     @SendToUser("/getter/get_users")
-    public List<WantedWS> getUsers(Principal principal, String queryParam) throws Exception {
+    public List<FoundWS> getUsers(Principal principal, String queryParam) throws Exception {
         String name = principal.getName();//get name - users email
         UserDTO user = userService.findUserByEmail(name);
 
-        List<WantedWS> wantedList = wantedWSRepository.findUsersByREGEX(queryParam, user.getId());
-        return wantedList;
+        List<FoundWS> foundList = new ArrayList<>();
+
+        List<ConversationDTO> conversationList = conversationService.findConversationByRegexp(queryParam, user.getId());
+        conversationList.forEach(conversationDTO -> {
+            if(!conversationDTO.isGroup()) {// if conversation is not group
+                if(conversationDTO.getName().equals("self")){
+                    UserDTO convUser = (UserDTO) conversationDTO.getUsers().toArray()[0];
+                    foundList.add(new FoundWS(null, convUser.getId(), convUser.getUsername()));
+                }
+                else{
+                    foundList.add(new FoundWS(conversationDTO.getId(), null, conversationDTO.getName(user)));
+                }
+
+            }else{
+                foundList.add(new FoundWS(conversationDTO.getId(), null, conversationDTO.getName()));
+            }
+        });
+
+        return foundList;
     }
 
     //create new talk conversation

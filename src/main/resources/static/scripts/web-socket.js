@@ -52,9 +52,9 @@ function connect() {
         stompClient.send('/newMessage/token');
 
         //subscribe for searching users
-        stompClient.subscribe('/user/getter/get_users', function (wantedWS){
-            var wantedList = JSON.parse(wantedWS.body);
-            showUsers(wantedList);
+        stompClient.subscribe('/user/getter/get_users', function (foundList){
+            var foundList = JSON.parse(foundList.body);
+            showUsers(foundList);
 
         });
     });
@@ -81,16 +81,13 @@ function addMessage(message, id, type) {
     messageArea.scrollTop(messageArea[0].scrollHeight);//scroll to end
 }
 
-function showUsers(wantedList){
+function showUsers(foundList){
     let findBox = $( ".search .find" );
     findBox.html("");//delete old find users from findBox
 
-    for(user of wantedList){
+    for(user of foundList){
         //add all users to findBox
-        if(user.name)
-            findBox.append(" <div class='user'> <button class='conv_button' onclick='getConversation("+user.id+","+user.conv_id+",\""+user.username+"\")'>" + user.name + "</button></div>");
-        else
-            findBox.append(" <div class='user'> <button class='conv_button' onclick='getConversation("+user.id+","+user.conv_id+",\""+user.username+"\")'>" + user.username + "</button></div>");
+        findBox.append(" <div class='user'> <button class='conv_button' onclick='getConversation("+user.user_id+","+user.conv_id+",\""+user.name+"\")'>" + user.name + "</button></div>");
     }
     findBox.show();
 }

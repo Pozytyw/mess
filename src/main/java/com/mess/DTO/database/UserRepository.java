@@ -12,8 +12,5 @@ public interface UserRepository extends JpaRepository<UserDTO, Long> {
     UserDTO findByEmail(String email);
 
     @Query(value = "select * from users where email in :emails", nativeQuery = true)
-    List<UserDTO> findUserByEmails(String[] emails);
-
-    @Query()
-    List<UserDTO> findUsersByREGEX(Long id, String regex);
+    List<UserDTO> findUserByEmails(@Param("emails") String[] emails);
 }
