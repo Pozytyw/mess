@@ -34,7 +34,7 @@ function connect() {
             });
 
             //subscribe for new talk conversation
-            convHandler = stompClient.subscribe('/getter/new_conv/'+token.token, function (conversation) {
+            convHandler = stompClient.subscribe('/getter/new_talk/'+token.token, function (conversation) {
                 var conversation = JSON.parse(conversation.body);
                 addConv(conversation.id, conversation.name);
             });
@@ -97,7 +97,7 @@ function getConversation(user_id, conv_id, username){
         showConv(conv_id);
     }else{
         if(confirm("Create new conversation with \"" + username + "\" ?")){
-            stompClient.send("/newMessage/new_conv", {}, user_id);
+            stompClient.send("/newMessage/new_talk", {}, user_id);
             //remove lastSearch to get new conv_id for conversation
             lastSearch = "";
             //delete old find users from findBox

@@ -4,9 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,27 +38,5 @@ public class ConversationServiceImpl implements ConversationService{
     @Override
     public List<ConversationDTO> findConversationByRegexp(@Param("regexp") String regexp, @Param("user_id") Long user_id){
         return convRepository.findConversationByRegexp(regexp, user_id);
-    }
-
-    @Override
-    public ConversationDTO newConv(ConversationForm conversationForm, String[] emails) {
-
-        ConversationDTO conversationDTO = new ConversationDTO();
-        conversationDTO.setName(conversationForm.getName());
-        conversationDTO.setGroup(conversationForm.isGroup());
-
-        //set role
-        List<UserDTO> users = userRepository.findUserByEmails(emails);
-        conversationDTO.setUsers(new HashSet<UserDTO>(users));
-
-        //test - conv is talk and this 2 users have already conv
-        if(conversationDTO.isGroup()){
-            if(!convRepository.getTalk2Users(users.get(0).getId(), users.get(1).getId()).isEmpty());
-                return new ConversationDTO();
-        }
-
-        convRepository.saveAndFlush(conversationDTO);
-
-        return conversationDTO;
     }
 }

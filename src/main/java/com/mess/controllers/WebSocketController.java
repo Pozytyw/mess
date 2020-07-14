@@ -64,31 +64,34 @@ public class WebSocketController {
     }
 
     //create new talk conversation
-    @MessageMapping("/new_conv")
-    public void newConv(Principal principal, Long user_id) throws Exception{
+    @MessageMapping("/new_talk")
+    public void newTalk(Principal principal, Long user_id) throws Exception{
         //get names for new conversation
         String email = principal.getName();
         String email2 = userService.findUserById(user_id).get().getEmail();
-        UserDTO user = userService.findUserByEmail(email);
+        UserDTO authUser = userService.findUserByEmail(email);
+        UserDTO groupUser = userService.findUserByEmail(email2);
 
         //create new conversation
-        ConversationForm conversation = new ConversationForm();
+        ConversationDTO conversation = new ConversationDTO();
         conversation.setName("talk");
         conversation.setGroup(false);
+        //set users
+        Set<UserDTO> users = new HashSet<>();
+        users.add(authUser);
+        users.add(groupUser);
+        conversation.setUsers(users);
 
-        ConversationDTO conversationDTO = conversationService.newConv(conversation, new String[]{email , email2});
+        conversationService.save(conversation);
 
-        //update id
-        conversation.setId(conversationDTO.getId());
-
-        for(UserDTO userDTO : conversationDTO.getUsers()) {
+        for(UserDTO userDTO : conversation.getUsers()) {
             String token = UsersToken.usersToken.get(userDTO.getEmail());
             if(token == null)
                 continue;//ship if user isn't login
-            String destination = "/getter/new_conv/" + token;
+            String destination = "/getter/new_talk/" + token;
 
             //update name by user
-            conversation.setName(conversationDTO.getName(userDTO));//if talk set name like caller username
+            conversation.setName(conversation.getName(userDTO));//if talk set name like caller username
 
             messagingTemplate.convertAndSend(destination, conversation);
         }
