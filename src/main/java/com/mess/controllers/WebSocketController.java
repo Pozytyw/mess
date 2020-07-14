@@ -47,15 +47,17 @@ public class WebSocketController {
         List<ConversationDTO> conversationList = conversationService.findConversationByRegexp(queryParam, user.getId());
         conversationList.forEach(conversationDTO -> {
             if(!conversationDTO.isGroup()) {// if conversation is not group
+
+                //conversations with name self are used to create new talk conversation
                 if(conversationDTO.getName().equals("self")){
                     UserDTO convUser = (UserDTO) conversationDTO.getUsers().toArray()[0];
                     foundList.add(new FoundWS(null, convUser.getId(), convUser.getUsername()));
                 }
-                else{
+                else{//conversations with name talk. Only one for two users
                     foundList.add(new FoundWS(conversationDTO.getId(), null, conversationDTO.getName(user)));
                 }
 
-            }else{
+            }else{//group conversations
                 foundList.add(new FoundWS(conversationDTO.getId(), null, conversationDTO.getName()));
             }
         });
