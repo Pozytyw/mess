@@ -32,8 +32,9 @@ public class ConversationServiceImpl implements ConversationService{
     }
 
     @Override
-    public void save(ConversationDTO conversationDTO){
+    public Long save(ConversationDTO conversationDTO){
         convRepository.save(conversationDTO);
+        return conversationDTO.getId();
     }
 
     @Override
@@ -46,6 +47,12 @@ public class ConversationServiceImpl implements ConversationService{
         //set role
         List<UserDTO> users = userRepository.findUserByEmails(emails);
         conversationDTO.setUsers(new HashSet<UserDTO>(users));
+
+        //test - conv is talk and this 2 users have already conv
+        if(conversationDTO.isGroup()){
+            if(!convRepository.getTalk2Users(users.get(0).getId(), users.get(1).getId()).isEmpty());
+                return new ConversationDTO();
+        }
 
         convRepository.saveAndFlush(conversationDTO);
 

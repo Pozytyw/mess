@@ -57,4 +57,9 @@ public class UserServiceImpl implements UserService {
         //save user
         userRepository.save(user);
     }
+
+    @Override
+    public List<UserDTO> findUsersByREGEX(Long id, String regex) {
+        return null;
+    }
 }

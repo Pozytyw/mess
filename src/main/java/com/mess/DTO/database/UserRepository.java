@@ -13,4 +13,7 @@ public interface UserRepository extends JpaRepository<UserDTO, Long> {
 
     @Query(value = "select * from users where email in :emails", nativeQuery = true)
     List<UserDTO> findUserByEmails(String[] emails);
+
+    @Query()
+    List<UserDTO> findUsersByREGEX(Long id, String regex);
 }

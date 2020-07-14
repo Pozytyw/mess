@@ -1,10 +1,7 @@
 package com.mess.controllers;
 
 import com.mess.DTO.database.*;
-import com.mess.DTO.ws.MessageWS;
-import com.mess.DTO.ws.Token;
-import com.mess.DTO.ws.UserWS;
-import com.mess.DTO.ws.UserWSRepository;
+import com.mess.DTO.ws.*;
 import com.mess.websocket.UsersToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -13,8 +10,7 @@ import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class WebSocketController {
@@ -27,9 +23,7 @@ public class WebSocketController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    UserWSRepository userWSRepository;
-
+    //send token
     @MessageMapping("/token")
     @SendToUser("/getter/token")
     public Token getToken(Principal principal) throws Exception {
@@ -40,22 +34,23 @@ public class WebSocketController {
         return new Token(name, token);//return token to create unique subscriptions
     }
 
+    //search for users
     @MessageMapping("/get_users")
     @SendToUser("/getter/get_users")
-    public List<UserWS> getUsers(Principal principal, String queryParam) throws Exception {
+    public List<WantedWS> getUsers(Principal principal, String queryParam) throws Exception {
         String name = principal.getName();//get name - users email
         UserDTO user = userService.findUserByEmail(name);
 
-        List<UserWS> usersList = userWSRepository.findUsersByREGEX(queryParam, user.getId());
-        return usersList;
+        List<WantedWS> wantedList = wantedWSRepository.findUsersByREGEX(queryParam, user.getId());
+        return wantedList;
     }
 
+    //create new talk conversation
     @MessageMapping("/new_conv")
     public void newConv(Principal principal, Long user_id) throws Exception{
         //get names for new conversation
         String email = principal.getName();
         String email2 = userService.findUserById(user_id).get().getEmail();
-
         UserDTO user = userService.findUserByEmail(email);
 
         //create new conversation
@@ -81,6 +76,57 @@ public class WebSocketController {
         }
     }
 
+    //add user to existed group or if group doesn't exist create new group
+    @MessageMapping("/add_group")
+    public void newGroup(Principal principal, GroupWS groupWS) throws Exception{
+        UserDTO authUser = userService.findUserByEmail(principal.getName());//get auth user from repository
+        UserDTO groupUser;
+
+        ConversationDTO conversationGroup = conversationService.findByID(groupWS.getConv_id()).get();//conversation gave in message
+
+        //if conversation is group add new user to it
+        if(conversationGroup.isGroup()){
+            try {
+                groupUser = userService.findUserById(groupWS.getUser_id()).get();//get user from web socket message
+                conversationGroup.getUsers().add(groupUser);//add new user to group
+                conversationService.save(conversationGroup);//save group
+
+                //send to all users from group, if login, message add group with updated conversation
+                for(UserDTO userDTO : conversationGroup.getUsers()) {
+                    String token = UsersToken.usersToken.get(userDTO.getEmail());
+                    if(token == null)
+                        continue;//ship if user isn't login
+                    String destination = "/getter/add_group/" + token;
+                    messagingTemplate.convertAndSend(destination, new GroupWS(conversationGroup.getId(), groupUser.getId(), conversationGroup.getName()));
+                }
+            }catch (NullPointerException e){}
+
+        }else{//create new group with authUser and groupUser
+            Long conv_id;
+            ConversationDTO newGroupConversation = new ConversationDTO();
+            newGroupConversation.setName(conversationGroup.getUsers());//set name for group by conversation gave in message
+            newGroupConversation.setGroup(true);//is now group
+            HashSet<UserDTO> users = new HashSet<>();
+            for(UserDTO user : conversationGroup.getUsers()){
+                users.add(user);
+            }
+            newGroupConversation.setUsers(users);//set users
+
+            conv_id = conversationService.save(newGroupConversation);//save, create new conversation in repository
+
+            //send to all users from group, if login, message "add group" with conversation id
+            for(UserDTO userDTO : newGroupConversation.getUsers()) {
+                String token = UsersToken.usersToken.get(userDTO.getEmail());
+                if(token == null)
+                    continue;//ship if user isn't login
+                String destination = "/getter/add_group/" + token;
+                messagingTemplate.convertAndSend(destination, new GroupWS(conv_id, null, newGroupConversation.getName()));
+            }
+        }
+
+    }
+
+    //send message to user
     @MessageMapping("/toUser")
     public void sendToUser(Principal principal, MessageWS messageWS) throws Exception{
         Long conversationId = Long.parseLong(messageWS.getConversationId());//get conversationId
@@ -120,5 +166,4 @@ public class WebSocketController {
             messagingTemplate.convertAndSend(destination, messageWS);
         }
     }
-
 }

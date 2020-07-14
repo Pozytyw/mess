@@ -7,6 +7,7 @@ function connect() {
 
     let messageHandler = null;
     let convHandler = null;
+    let groupHandler = null;
 
     stompClient = Stomp.over(socket);
 
@@ -23,6 +24,7 @@ function connect() {
             if(messageHandler != null){
                 messageHandler.unsubscribe();
                 convHandler.unsubscribe();
+                groupHandler.unsubscribe();
             }
 
             //subscribe for updating messages
@@ -31,18 +33,28 @@ function connect() {
                 addMessage(message.message, message.conversationId, "get");
             });
 
-            //subscribe for new conversation
+            //subscribe for new talk conversation
             convHandler = stompClient.subscribe('/getter/new_conv/'+token.token, function (conversation) {
                 var conversation = JSON.parse(conversation.body);
                 addConv(conversation.id, conversation.name);
+            });
+
+            //subscribe for add user to group or create new group
+            groupHandler = stompClient.subscribe('/getter/add_group/'+token.token, function (group) {
+                var group = JSON.parse(group.body);
+                var messageArea = $("#messageArea");
+                var convArea = messageArea.find( "#"+group.conv_id );
+                if(convArea.length == 0){
+                    addConv(group.conv_id, group.name);
+                }
             });
         });
         stompClient.send('/newMessage/token');
 
         //subscribe for searching users
-        stompClient.subscribe('/user/getter/get_users', function (users){
-            var usersList = JSON.parse(users.body);
-            showUsers(usersList);
+        stompClient.subscribe('/user/getter/get_users', function (wantedWS){
+            var wantedList = JSON.parse(wantedWS.body);
+            showUsers(wantedList);
 
         });
     });
@@ -64,19 +76,21 @@ function sendMessage() {
 
 function addMessage(message, id, type) {
     var messageArea = $("#messageArea");
-    var Id = "#"+id;
-    var convArea = messageArea.find( Id );
+    var convArea = messageArea.find( "#"+id );
     convArea.append("<div class='"+type+"'><span>" + message + "</span></div>");//add message to message area
     messageArea.scrollTop(messageArea[0].scrollHeight);//scroll to end
 }
 
-function showUsers(usersList){
+function showUsers(wantedList){
     let findBox = $( ".search .find" );
     findBox.html("");//delete old find users from findBox
 
-    for(user of usersList){
+    for(user of wantedList){
         //add all users to findBox
-        findBox.append(" <div class='user'> <button class='conv_button' onclick='getConversation("+user.id+","+user.conv_id+",\""+user.username+"\")'>" + user.username + "</button></div>");
+        if(user.name)
+            findBox.append(" <div class='user'> <button class='conv_button' onclick='getConversation("+user.id+","+user.conv_id+",\""+user.username+"\")'>" + user.name + "</button></div>");
+        else
+            findBox.append(" <div class='user'> <button class='conv_button' onclick='getConversation("+user.id+","+user.conv_id+",\""+user.username+"\")'>" + user.username + "</button></div>");
     }
     findBox.show();
 }
@@ -85,13 +99,22 @@ function getConversation(user_id, conv_id, username){
     if(conv_id){
         showConv(conv_id);
     }else{
-        if(confirm("Create new conversation with \"" + username + "\" ?"))
+        if(confirm("Create new conversation with \"" + username + "\" ?")){
             stompClient.send("/newMessage/new_conv", {}, user_id);
+            //remove lastSearch to get new conv_id for conversation
+            lastSearch = "";
+            //delete old find users from findBox
+            $( ".search .find" ).html("");
+            $( "#search" ).val("");
+
+        }
     }
 }
 
 function showConv(conv_id){
     var messageArea = $( "#messageArea" );
+
+    conversationId = conv_id;
 
     //hidden all conversation except selected conversation
     messageArea.find("div[class='conv']").hide()
@@ -117,7 +140,6 @@ function addConv(conv_id, conv_name){
         descClick($(this));
     });
     //create new conv are
-
     var messageArea = $( "#messageArea" );
     var convDiv = "<div id='"+conv_id+"' class='conv'> </div>";
     messageArea.append(convDiv);
@@ -192,8 +214,16 @@ $(window).on('load', function () {
         descClick($(this));
     });
 
+    //set click event method for add_group icon
+    $( "#add_group" ).click(function(event) {
+        var groupWS = {"conv_id": conversationId, "user_id" : null, "name" : null};
+        stompClient.send("/newMessage/add_group", {}, JSON.stringify(groupWS));//send message add_group
+    });
+
     //click first receiver button
-    $( ".receiver" )[0].click();
+    var receiver = $( ".receiver" );
+    if(receiver.length > 0)
+        receiver[0].click();
 
     //hide find box
     $( ".search .find" ).hide();

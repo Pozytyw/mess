@@ -241,3 +241,19 @@ messageArea *{
 #send svg{
     width: 50%;
 }
+
+#add_group{
+    background-color: rgba(0,0,0,0.1);
+    position: absolute;
+    padding: 5px 10.5px 5px 10.5px;
+    border-radius: 100%;
+    right: 10px;
+    top: 10px;
+}
+#add_group:hover{
+    background-color: var(--elem-color);
+}
+
+#add_group:hover .fa-plus{
+    color: var(--cloud-color);
+}

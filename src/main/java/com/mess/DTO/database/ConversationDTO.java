@@ -51,6 +51,14 @@ public class ConversationDTO {
         this.name = name;
     }
 
+    public void setName(Set<UserDTO> users) {
+        this.name = "";
+        users.forEach(user -> {
+            this.name += user.getUsername() + ", ";
+        });
+        this.name = this.name.substring(0 , this.name.length() - 2);//remove last ", "
+    }
+
     public boolean isGroup() {
         return isGroup;
     }
