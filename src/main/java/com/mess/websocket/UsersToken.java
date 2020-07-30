@@ -2,6 +2,7 @@ package com.mess.websocket;
 
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 
+import javax.validation.constraints.Null;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -41,8 +42,12 @@ public class UsersToken {
     }
 
     public static String getToken(String name){
-        String token = (String) usersToken.get(name)[0];
-        return token;
+        try {
+            String token = (String) usersToken.get(name)[0];
+            return token;
+        }catch(NullPointerException e){
+            return null;
+        }
     }
 
     private static String getRandomPepper(){
