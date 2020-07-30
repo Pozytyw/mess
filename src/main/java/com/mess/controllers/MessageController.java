@@ -26,10 +26,13 @@ public class MessageController {
     public ModelAndView getMessenger() {
         ModelAndView model = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        //get user ny auth name
         UserDTO user = userService.findUserByEmail(auth.getName());
 
+        //get all user's conversations
         List<ConversationDTO> conversationList = convRepository.getByUserID(user.getId());
 
+        //set view and put in to it conversation list
         model.setViewName("message/message");
         model.addObject("conversations", conversationList);
         model.addObject("user", user);

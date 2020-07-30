@@ -17,6 +17,7 @@ public class AuthenticationController {
     @Autowired
     private UserService userService;
 
+    //return login side
     @RequestMapping(value= {"/login"}, method= RequestMethod.GET)
     public ModelAndView login() {
         ModelAndView model = new ModelAndView();
@@ -25,6 +26,7 @@ public class AuthenticationController {
         return model;
     }
 
+    //return signUp side
     @RequestMapping(value= {"/signUp"}, method=RequestMethod.GET)
     public ModelAndView signUp() {
         ModelAndView model = new ModelAndView();
@@ -35,6 +37,8 @@ public class AuthenticationController {
         return model;
     }
 
+    //processing post request from singUp side
+    //register new user
     @RequestMapping(value= {"/signUp"}, method=RequestMethod.POST)
     public ModelAndView createUser(@Valid UserForm userForm, BindingResult bindingResult) {
         ModelAndView model = new ModelAndView();
