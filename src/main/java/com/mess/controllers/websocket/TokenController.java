@@ -18,9 +18,8 @@ public class TokenController {
         //get name - users email
         String name = principal.getName();
         //get unique random token from UsersToken class
-        String token = UsersToken.getToken(name);
-        // put in map email -> token
-        UsersToken.usersToken.put(name, token);
+        //and put in map email -> token
+        String token = UsersToken.newToken(name);
         //return token to create unique subscriptions
         return new Token(name, token);
     }

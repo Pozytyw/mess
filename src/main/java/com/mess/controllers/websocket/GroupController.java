@@ -48,7 +48,7 @@ public class GroupController {
         conversationService.save(conversation);
 
         for(UserDTO userDTO : conversation.getUsers()) {
-            String token = UsersToken.usersToken.get(userDTO.getEmail());
+            String token = UsersToken.getToken(userDTO.getEmail());
             //ship if user isn't login
             if(token == null)
                 continue;
@@ -83,7 +83,7 @@ public class GroupController {
 
                 //send to all users from group, if login, message add group with updated conversation
                 for(UserDTO userDTO : conversationGroup.getUsers()) {
-                    String token = UsersToken.usersToken.get(userDTO.getEmail());
+                    String token = UsersToken.getToken(userDTO.getEmail());
                     if(token == null)
                         continue;//ship if user isn't login
                     String destination = "/getter/add_group/" + token;
@@ -114,7 +114,7 @@ public class GroupController {
 
             //send to all users from group, if login, message "add group" with conversation id
             for(UserDTO userDTO : newGroupConversation.getUsers()) {
-                String token = UsersToken.usersToken.get(userDTO.getEmail());
+                String token = UsersToken.getToken(userDTO.getEmail());
                 //ship if user isn't login
                 if(token == null)
                     continue;

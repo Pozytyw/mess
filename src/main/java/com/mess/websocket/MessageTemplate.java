@@ -28,7 +28,7 @@ public class MessageTemplate {
     private void sendToUsersDestination(String destination, List<String> emails, MessageWS messageWS){
         for(String email : emails) {
             //get users token
-            String token = UsersToken.usersToken.get(email);
+            String token = UsersToken.getToken(email);
             //ship if user isn't login
             if(token == null)
                 continue;
