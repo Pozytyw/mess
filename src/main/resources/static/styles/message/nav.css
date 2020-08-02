@@ -2,11 +2,13 @@
 @keyframes boardAnimation {
     from {
         width: 30%;
+        height: 0;
         left: 35%;
     }
     to {
         width: 80%;
         left: 10%;
+        height: 35vh;
     }
 }
 
@@ -106,18 +108,16 @@ body *{
     left: 10%;
 }
 
-.gb{
-    position: absolute;
-    width: 80%;
-    border-bottom: solid 0.5px var(--nav-color);
-    bottom: -2px;
-    left: 10%;
-}
-
 .search{
     position: relative;
     width: 80%;
     margin-left: 10%;
+    font-size: 3vh;
+}
+
+.search:hover .found{
+    animation-name : boardAnimation;
+    overflow-y: auto;
 }
 
 .search input{
@@ -129,23 +129,44 @@ body *{
     text-align: center;
     border-radius: 15px;
     background-color: transparent;
-    font-size: 3vh;
+    font-size: 2.5vh;
 }
 
 .search input:focus{
     outline: none;
 }
 
-.ab{
+.found{
     position: absolute;
+    z-index: 1;
     width: 30%;
-    border-bottom: solid 0.5px var(--text-color);
-    bottom: 0;
+    height: 0;
+    top: 100%;
     left: 35%;
-    animation-duration: 0.75s;
+    border-top: solid 0.5px var(--text-color);
+    border-bottom: solid 0.5px var(--text-color);
+    overflow: hidden;
+    animation-duration: 0.50s;
     animation-timing-function: ease-in;
     animation-fill-mode: forwards;
 }
+
+.found .user{
+    text-align: center;
+}
+
+.found .user span{
+    margin-right: 10px;
+}
+
+.found .user i{
+    cursor: pointer;
+}
+
+.found .user:hover i{
+    color: var(--elem-color);
+}
+
 
 .nav .conversations_list{
     margin-top: 5vh;

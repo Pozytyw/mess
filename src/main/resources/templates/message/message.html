@@ -33,7 +33,9 @@
                 <form autocomplete="off">
                     <input type="text" id="search" placeholder="Search: ">
                 </form>
-                <span class="ab"> </span>
+                <div class="found">
+
+                </div>
             </div>
             <div class="conversations_list">
                 <th:block th:each="conversation : *{conversations}">
@@ -45,7 +47,6 @@
                             <span th:if="${conversation.isGroup()}"th:text="${conversation.name}"></span>
                             <span th:unless="${conversation.isGroup()}">[[${conversation.getName(user)}]]</span>
                         </div>
-                        <span class="gb"></span>
                     </div>
                 </th:block>
             </div>

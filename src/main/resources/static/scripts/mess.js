@@ -1,22 +1,19 @@
 // on window load
 $(window).on('load', function () {
-    //set animation when mouse over search bar
-    $( ".search" ).mouseenter(function () {
-        $( ".ab" ).css("animation-name","boardAnimation")
-    });
 
     $( ".search input" ).focus(function () {
-        $( ".ab" ).css("animation-name","boardAnimation")
+        $( ".found" ).css("animation-name","boardAnimation")
     });
 
     //stop animation when mouse out of search bar, but if input isn't focus
     $( ".search" ).mouseout(function () {
-        if(!$( ".search input" ).is(":focus"))
-            $( ".ab" ).css("animation-name","")
+        if(!$( ".search input" ).is(":focus")){
+            $( ".found" ).css("animation-name","")
+        }
     });
 
     $( ".search input" ).blur(function () {
-        $( ".ab" ).css("animation-name","")
+        $( ".found" ).css("animation-name","")
     });
 
     //set icon height to width

@@ -33,11 +33,12 @@ function connect() {
                 addMessage(message.message, message.conversationId, "get");
             });
 
-//            //subscribe for new talk conversation
-//            convHandler = stompClient.subscribe('/getter/new_talk/'+token.token, function (conversation) {
-//                var conversation = JSON.parse(conversation.body);
-//                addConv(conversation.id, conversation.name);
-//            });
+            //subscribe for new talk conversation
+            convHandler = stompClient.subscribe('/getter/new_talk/'+token.token, function (conversation) {
+                var conversation = JSON.parse(conversation.body);
+                console.log(conversation.name);
+                addConv(conversation.id, conversation.name);
+            });
 
 //            //subscribe for add user to group or create new group
 //            groupHandler = stompClient.subscribe('/getter/add_group/'+token.token, function (group) {
@@ -51,12 +52,12 @@ function connect() {
         });
         stompClient.send('/newMessage/token');
 
-//        //subscribe for searching users
-//        stompClient.subscribe('/user/getter/get_users', function (foundList){
-//            var foundList = JSON.parse(foundList.body);
-//            showUsers(foundList);
-//
-//        });
+        //subscribe for searching users
+        stompClient.subscribe('/user/getter/get_users', function (foundList){
+            var foundList = JSON.parse(foundList.body);
+            showUsers(foundList);
+
+        });
     });
 
 }
@@ -72,6 +73,38 @@ function sendMessage() {
 
     stompClient.send("/newMessage/toUser", {}, JSON.stringify(message));
     addMessage(message.message, conversationId, "post");
+}
+
+function showUsers(foundList){
+    $(".nav .found").html("");
+    for(user of foundList){
+        if(user.conv_id)
+            $(".nav .found").append("<div class='user' onclick='showConv(" + user.conv_id + ")'><span>"+ user.name +"</span><i class='fa fa-arrow-right' aria-hidden='true'></i></div>");
+        else
+            $(".nav .found").append("<div class='user' onclick='newConv(" + user.user_id + ")'><span>"+ user.name +"</span><i class='fas fa-plus'></i></div>");
+    }
+}
+
+function newConv(user_id){
+    stompClient.send("/newMessage/new_talk", {}, user_id);
+}
+
+function addConv(conv_id, name){
+    var div = "";
+    div += "<div class='conversation' id='"+conv_id+"'>";
+        div += "<div class='icon'>";
+            div += "<img src='/images/img.png'/>";
+        div += "</div>";
+        div += "<div class='name'>";
+            div += "<span>" + name + "</span>";
+        div += "</div>"
+    div += "</div>"
+    //append div to conversations list
+    $(".conversations_list").append(div);
+
+    //set icon height to width
+    var cw = $( ".conversation .icon" ).width();
+    $( ".conversation .icon" ).css({'height':cw+'px'});
 }
 
 function addMessage(message, id, type) {
@@ -128,6 +161,25 @@ $(window).on('load', function () {
     $( "#message" ).keypress(function(event){
         if( event.which == 13 ){
             sendMessage();
+        }
+    });
+
+    //search for users, when user pressed enter or min 3 times type character. If user add new character, send new query
+    $( "#search" ).keypress(function (event){
+        var query = null;
+
+        //if enter
+        if( event.which == 13 ){
+            if(this.value){
+                query = this.value;//set value if != null
+            }
+        }else if( this.value.length >= 2 ){
+            query = this.value + event.key;//add pressed key value to the query
+        }
+
+        //if query != null send to server query parameter and query is different from lastSearch
+        if(query && query != lastSearch){
+            stompClient.send("/newMessage/get_users", {}, query);//send with query parameter
         }
     });
 });
