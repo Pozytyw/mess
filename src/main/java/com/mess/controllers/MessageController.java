@@ -33,9 +33,9 @@ public class MessageController {
         List<ConversationDTO> conversationList = convRepository.getByUserID(user.getId());
 
         //set view and put in to it conversation list
-        model.setViewName("message/message");
         model.addObject("conversations", conversationList);
         model.addObject("user", user);
+        model.setViewName("message/message");
         return model;
     }
 

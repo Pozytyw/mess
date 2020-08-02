@@ -1,0 +1,88 @@
+
+.conversations_box{
+    position: relative;
+    width: 100%;
+    height: 67vh;
+    margin-top: 5vh;
+    border-radius: 25px;
+}
+
+.conversations_box .back_icon{
+    position: absolute;
+    left: 1%;
+    top: 1%;
+    transform: translateY(-4vh);
+    cursor: pointer;
+}
+
+.back_icon i{
+    font-size: 3.5vh;
+}
+
+.conversations_box .messageArea{
+    overflow-y: auto;
+    height: 61vh;
+    margin-bottom: 1vh;
+    width: 100%;
+}
+
+.conversations_box .message{
+    width: 100%;
+    height: 5vh;
+}
+
+.message input{
+    width: 86%;
+    height: inherit;
+    float: left;
+    padding: 0;
+    padding-left: 4%;
+    outline: none;
+    border: none;
+    color: black;
+    border-bottom-left-radius: 25px;
+}
+
+.message #send{
+    width: 10%;
+    height: inherit;
+    float: left;
+    padding: 0;
+    background-color: white;
+    outline: none;
+    border: none;
+    border-bottom-right-radius: 25px;
+    cursor: pointer;
+}
+
+#send i{
+    color: black;
+}
+
+#send:hover i{
+    color: var(--elem-color);
+}
+
+.post, .get{
+    width: 100%;
+}
+
+.post{
+    text-align: right;
+}
+
+.post span{
+    border-top-left-radius: 15px;
+}
+
+.get span{
+    border-top-right-radius: 15px;
+}
+
+.conv span{
+    display: inline-block;
+    padding: 10px 15px 10px 15px;
+    max-width: 35%;
+    margin-bottom: 1vh;
+    background-color: var(--cloud-color);
+}
