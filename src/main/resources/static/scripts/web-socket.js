@@ -132,6 +132,9 @@ function showConv(conv_id){
     //hide conversations list
     $( ".conversations_list" ).hide();
 
+    //hide all conv
+    messageArea.find(".conv").hide();
+
     //show selected conversation
     $( ".conversations_box" ).show();
     messageArea.find("div[id='" + conv_id + "']").show()
