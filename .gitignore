@@ -16,6 +16,9 @@ target/
 ### Application properties ###
 application.properties
 
+### gitignore
+.gitignore
+
 ### IntelliJ IDEA ###
 .idea
 *.iws

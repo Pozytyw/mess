@@ -56,11 +56,16 @@ public class AuthenticationController {
         if (!bindingResult.hasErrors()) {
             //save new user if it's valid
             userService.saveUser(userForm);
-
             model.addObject("msg", "User has been registered successfully!");
+            //return login form
+            model.setViewName("authentication/login");
+        }else{
+            //remove password
+            userForm.setPassword("");
             model.addObject("userForm", userForm);
+            //if error occur return again signUP form
+            model.setViewName("authentication/signUp");
         }
-        model.setViewName("authentication/signUp");
 
         return model;
     }
