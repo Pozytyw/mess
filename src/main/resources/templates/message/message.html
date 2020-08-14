@@ -61,10 +61,10 @@
                     <div th:id="${conversation.id}" class="conv">
                         <th:block th:each="message : ${conversation.messages}">
                             <div th:if="${message.user_id == user.id}" class="post">
-                                <span th:utext="${message.message}"></span>
+                                <span th:utext="${message.message}" th:id="${message.id}"></span>
                             </div>
                             <div th:unless="${message.user_id == user.id}" class="get">
-                                <span th:utext="${message.message}"></span>
+                                <span th:utext="${message.message}" th:id="${message.id}"></span>
                             </div>
                         </th:block>
                     </div>
@@ -78,5 +78,12 @@
             </div>
         </div>
     </div>
+    <script th:inline="javascript">
+        var list  = [[${readList}]];
+        for(elem of list){
+            elem = elem[0];
+            setRead(elem.id.conv_id, elem.id.user_id, elem.mess_id, elem.readData)
+        }
+    </script>
 </body>
 </html>

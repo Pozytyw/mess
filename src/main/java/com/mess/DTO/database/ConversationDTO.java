@@ -25,7 +25,6 @@ public class ConversationDTO {
     @ManyToMany(cascade=CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinTable(name="conv_user", joinColumns=@JoinColumn(name="conv_id"), inverseJoinColumns=@JoinColumn(name="user_id"))
     private Set<UserDTO> users;
-
     public ConversationDTO() {}
 
     public long getId() {

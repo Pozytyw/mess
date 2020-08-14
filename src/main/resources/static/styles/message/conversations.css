@@ -67,6 +67,10 @@
     width: 100%;
 }
 
+.read{
+    color: var(--cloud-color);
+}
+
 .post{
     text-align: right;
 }

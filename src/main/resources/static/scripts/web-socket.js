@@ -62,6 +62,12 @@ function connect() {
 
 }
 
+function setRead(conv_id, user_id, mess_id, date){
+    var conversation = $( "div[id=" + conv_id + "]" );
+    var span = conversation.find( "#" + mess_id );
+    span.addClass("read");
+}
+
 function sendMessage() {
     var message = $("#message").val();
 
@@ -141,6 +147,13 @@ function showConv(conv_id){
 
     //scroll message area to end
     messageArea.scrollTop(messageArea[0].scrollHeight);
+
+    //send "readMessage"
+    var conversation = $( "div[id=" + conv_id + "]" );
+    var mess_id = conversation.find( "span" ).last()[0].id//get last mess_id
+
+    message = {'conv_id': conv_id, 'mess_id' : mess_id, 'readDate': new Date()};//create json object to send
+    stompClient.send("/newMessage/read", {}, JSON.stringify(message));
 }
 
 // on window load
