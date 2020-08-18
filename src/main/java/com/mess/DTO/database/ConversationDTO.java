@@ -17,7 +17,7 @@ public class ConversationDTO {
     @Column(name = "is_group")
     private boolean isGroup;
 
-    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade=CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinTable(name="conv_messages", joinColumns=@JoinColumn(name="conv_id"), inverseJoinColumns=@JoinColumn(name="mess_id"))
     @OrderBy(value="send_date")
     private Set<MessageDTO> messages;

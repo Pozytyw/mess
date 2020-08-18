@@ -8,6 +8,7 @@ function connect() {
     let messageHandler = null;
     let convHandler = null;
     let groupHandler = null;
+    let lastReadHandler = null;
 
     stompClient = Stomp.over(socket);
 
@@ -21,16 +22,25 @@ function connect() {
             var token = JSON.parse(token.body);
 
             //unsubscribe already exit message handler
-            if(messageHandler != null){
-                messageHandler.unsubscribe();
-                convHandler.unsubscribe();
-                groupHandler.unsubscribe();
-            }
+            if(messageHandler != null)
+                    messageHandler.unsubscribe();
+            if(convHandler != null)
+                    convHandler.unsubscribe();
+            if(groupHandler != null)
+                    groupHandler.unsubscribe();
+            if(lastReadHandler != null)
+                    lastReadHandler.unsubscribe();
 
             //subscribe for updating messages
             messageHandler = stompClient.subscribe('/getter/message/'+token.token, function (message) {
                 var message = JSON.parse(message.body);
                 addMessage(message.message, message.conversationId, "get");
+
+                //if conversation is open
+                if(conversationId == message.conversationId){
+                    message = {'conv_id': conversationId, 'mess_id' : message.mess_id, 'readDate': new Date()};//create json object to send
+                    stompClient.send("/newMessage/read", {}, JSON.stringify(message));
+                }
             });
 
             //subscribe for new talk conversation
@@ -38,6 +48,12 @@ function connect() {
                 var conversation = JSON.parse(conversation.body);
                 console.log(conversation.name);
                 addConv(conversation.id, conversation.name);
+            });
+
+            //subscribe for newLastRead. Set last read message to conversation
+            lastReadHandler = stompClient.subscribe('/getter/newLastRead/'+token.token, function (readMessage) {
+                var readMessage = JSON.parse(readMessage.body);
+                setRead(readMessage.conv_id, null, readMessage.mess_id, readMessage.readDate);
             });
 
 //            //subscribe for add user to group or create new group
@@ -66,9 +82,16 @@ function setRead(conv_id, user_id, mess_id, date){
     var conversation = $( "div[id=" + conv_id + "]" );
     var spans = conversation.find( ".post" ).find("span");
     var notRead = false;
+
+    //all mess wasn't read
+    if(mess_id == 0)
+        notRead = true;
+
     for(elem of spans){
     	if(notRead)
     	    elem.classList.add("notRead")
+        else
+    	    elem.classList.remove("notRead")
 
         if(elem.id == mess_id)
             notRead = true;
@@ -131,8 +154,11 @@ function addMessage(message, id, type) {
     messageArea.scrollTop(messageArea[0].scrollHeight);//scroll to end
 }
 
+//hide all conversation
+//none of conversation is selected
 function showConvList(){
     var messageArea = $( "#messageArea" );
+    conversationId = null;
 
     //show conversations list
     $( ".conversations_list" ).show();
@@ -163,7 +189,7 @@ function showConv(conv_id){
     var conversation = $( "div[id=" + conv_id + "]" );
     var lastGetSpan = conversation.find( ".get" ).last().find( "span" )[0]//get last get mess_id
 
-    if(lastGetSpan !== "undefined"){
+    if(lastGetSpan != null){
         var mess_id = lastGetSpan.id;
         message = {'conv_id': conv_id, 'mess_id' : mess_id, 'readDate': new Date()};//create json object to send
         stompClient.send("/newMessage/read", {}, JSON.stringify(message));

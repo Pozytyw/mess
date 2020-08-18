@@ -45,7 +45,7 @@ public class GroupController {
         users.add(groupUser);
         conversation.setUsers(users);
 
-        conversationService.save(conversation);
+        conversationService.saveAndFlush(conversation);
 
         for(UserDTO userDTO : conversation.getUsers()) {
             String token = UsersToken.getToken(userDTO.getEmail());
@@ -79,7 +79,7 @@ public class GroupController {
                 //add new user to group
                 conversationGroup.getUsers().add(groupUser);
                 //save group
-                conversationService.save(conversationGroup);
+                conversationService.saveAndFlush(conversationGroup);
 
                 //send to all users from group, if login, message add group with updated conversation
                 for(UserDTO userDTO : conversationGroup.getUsers()) {
@@ -110,7 +110,7 @@ public class GroupController {
             newGroupConversation.setUsers(users);
 
             //save, create new conversation in repository
-            conv_id = conversationService.save(newGroupConversation);
+            conv_id = conversationService.saveAndFlush(newGroupConversation).getId();
 
             //send to all users from group, if login, message "add group" with conversation id
             for(UserDTO userDTO : newGroupConversation.getUsers()) {

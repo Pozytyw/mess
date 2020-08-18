@@ -50,9 +50,11 @@ public class MessagesController {
         //set sender username in receive message
         messageWS.setSender(user.getEmail());
 
-        conversation.getMessages().add(message);
-        conversationService.save(conversation);
+        //save message in conversation
+        conversation = conversationService.saveNewMessage(conversation, message);
 
+        //set message id
+        messageWS.setMess_id(message.getId());
         messageTemplate.sendMessage(messageWS, emails);
     }
 }

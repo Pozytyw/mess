@@ -1,10 +1,12 @@
 package com.mess.websocket;
 
 import com.mess.DTO.ws.MessageWS;
+import com.mess.DTO.ws.ReadMessageWS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.Calendar;
 import java.util.List;
 
 @Component("messageTemplate")
@@ -24,8 +26,15 @@ public class MessageTemplate {
         sendToUsersDestination(destination, emails, messageWS);
     }
 
+    //send read message to users
+    public void newLastRead(ReadMessageWS readMessageWS, List<String> emails){
+        //destination for sending message
+        String destination = "/getter/newLastRead/";
+        sendToUsersDestination(destination, emails, readMessageWS);
+    }
+
     //send to all users by destination
-    private void sendToUsersDestination(String destination, List<String> emails, MessageWS messageWS){
+    private void sendToUsersDestination(String destination, List<String> emails, Object message){
         for(String email : emails) {
             //get users token
             String token = UsersToken.getToken(email);
@@ -33,7 +42,7 @@ public class MessageTemplate {
             if(token == null)
                 continue;
             destination += token;
-            messagingTemplate.convertAndSend(destination, messageWS);
+            messagingTemplate.convertAndSend(destination, message);
         }
     }
 }

@@ -14,6 +14,8 @@ public class ConversationServiceImpl implements ConversationService{
 
     @Autowired UserRepository userRepository;
 
+    @Autowired MessageRepository messageRepository;
+
     @Override
     public List<String> getEmailsByConvId(long id) {
         return convRepository.getEmailsByConvId(id);
@@ -30,13 +32,22 @@ public class ConversationServiceImpl implements ConversationService{
     }
 
     @Override
-    public Long save(ConversationDTO conversationDTO){
-        convRepository.save(conversationDTO);
-        return conversationDTO.getId();
+    public ConversationDTO saveNewMessage(ConversationDTO conversationDTO, MessageDTO messageDTO){
+        //save message
+        messageRepository.saveAndFlush(messageDTO);
+        conversationDTO.getMessages().add(messageDTO);
+
+        convRepository.saveAndFlush(conversationDTO);
+        return conversationDTO;
     }
 
     @Override
     public List<ConversationDTO> findConversationByRegexp(@Param("regexp") String regexp, @Param("user_id") Long user_id){
         return convRepository.findConversationByRegexp(regexp, user_id);
+    }
+
+    @Override
+    public ConversationDTO saveAndFlush(ConversationDTO conversationDTO) {
+        return convRepository.saveAndFlush(conversationDTO);
     }
 }

@@ -7,7 +7,7 @@ import java.util.Calendar;
 @Table(name="messages")
 public class MessageDTO {
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private long id;
 

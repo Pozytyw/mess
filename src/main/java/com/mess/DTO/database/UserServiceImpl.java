@@ -70,6 +70,6 @@ public class UserServiceImpl implements UserService {
         users.add(user);
         conversationDTO.setUsers(users);
         //save new conversation
-        conversationService.save(conversationDTO);
+        conversationService.saveAndFlush(conversationDTO);
     }
 }
