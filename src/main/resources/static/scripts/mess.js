@@ -1,5 +1,5 @@
 // on window load
-$(window).on('load', function () {
+$( window ).on('load', function () {
 
     $( ".search input" ).focus(function () {
         $( ".found" ).css("animation-name","boardAnimation")
@@ -25,3 +25,9 @@ $(window).on('load', function () {
             e.preventDefault();
     });
 });
+
+$( window ).resize(function() {
+    //set icon height to width
+    var cw = $( ".conversation .icon" ).width();
+    $( ".conversation .icon" ).css({'height':cw+'px'});
+}

@@ -190,9 +190,12 @@ function showConv(conv_id){
     var lastGetSpan = conversation.find( ".get" ).last().find( "span" )[0]//get last get mess_id
 
     if(lastGetSpan != null){
-        var mess_id = lastGetSpan.id;
-        message = {'conv_id': conv_id, 'mess_id' : mess_id, 'readDate': new Date()};//create json object to send
-        stompClient.send("/newMessage/read", {}, JSON.stringify(message));
+        if(!lastGetSpan.read){//wasn't read in this session
+            var mess_id = lastGetSpan.id;
+            message = {'conv_id': conv_id, 'mess_id' : mess_id, 'readDate': new Date()};//create json object to send
+            lastGetSpan.read = true//mark: read
+            stompClient.send("/newMessage/read", {}, JSON.stringify(message));
+        }
     }
 }
 
