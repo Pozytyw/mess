@@ -80,9 +80,11 @@
     </div>
     <script th:inline="javascript">
         var list  = [[${readList}]];
-        for(elem of list){
-            elem = elem[0];
-            setRead(elem.id.conv_id, elem.id.user_id, elem.mess_id, elem.readData)
+        for(let i = 0; i < list.length; i++){
+            if(list[i].length > 0){
+                let read = list[i][0];
+                setRead(read.id.conv_id, read.id.user_id, read.mess_id, read.readData);
+            }
         }
     </script>
 </body>

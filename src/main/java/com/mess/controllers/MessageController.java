@@ -36,7 +36,7 @@ public class MessageController {
         List<List<ReadMessageDTO>> readList = new LinkedList<>();
         //for all conversation set last read message by users
         for(ConversationDTO conversationDTO : conversationList){
-            readList.add(readMessageRepository.findByConv_id(conversationDTO.getId()));
+            readList.add(readMessageRepository.findByConv_id(conversationDTO.getId(), user.getId()));
         }
 
         //set view and put in to it conversation list

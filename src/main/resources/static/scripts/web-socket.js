@@ -64,8 +64,15 @@ function connect() {
 
 function setRead(conv_id, user_id, mess_id, date){
     var conversation = $( "div[id=" + conv_id + "]" );
-    var span = conversation.find( "#" + mess_id );
-    span.addClass("read");
+    var spans = conversation.find( ".post" ).find("span");
+    var notRead = false;
+    for(elem of spans){
+    	if(notRead)
+    	    elem.classList.add("notRead")
+
+        if(elem.id == mess_id)
+            notRead = true;
+    }
 }
 
 function sendMessage() {
@@ -116,7 +123,11 @@ function addConv(conv_id, name){
 function addMessage(message, id, type) {
     var messageArea = $("#messageArea");
     var convArea = messageArea.find( "#"+id );
-    convArea.append("<div class='"+type+"'><span>" + message + "</span></div>");//add message to message area
+    if(type == "post"){
+        convArea.append("<div class='"+type+"'><span class='notRead'>" + message + "</span></div>");//add message to message area
+    }else{
+        convArea.append("<div class='"+type+"'><span>" + message + "</span></div>");//add message to message area
+    }
     messageArea.scrollTop(messageArea[0].scrollHeight);//scroll to end
 }
 
@@ -150,10 +161,13 @@ function showConv(conv_id){
 
     //send "readMessage"
     var conversation = $( "div[id=" + conv_id + "]" );
-    var mess_id = conversation.find( "span" ).last()[0].id//get last mess_id
+    var lastGetSpan = conversation.find( ".get" ).last().find( "span" )[0]//get last get mess_id
 
-    message = {'conv_id': conv_id, 'mess_id' : mess_id, 'readDate': new Date()};//create json object to send
-    stompClient.send("/newMessage/read", {}, JSON.stringify(message));
+    if(lastGetSpan !== "undefined"){
+        var mess_id = lastGetSpan.id;
+        message = {'conv_id': conv_id, 'mess_id' : mess_id, 'readDate': new Date()};//create json object to send
+        stompClient.send("/newMessage/read", {}, JSON.stringify(message));
+    }
 }
 
 // on window load

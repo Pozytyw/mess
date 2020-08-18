@@ -7,7 +7,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
-import java.util.Optional;
 
 @Controller
 public class ReadController {
@@ -22,10 +21,5 @@ public class ReadController {
         String name = principal.getName();//get name - users email
         UserDTO user = userService.findUserByEmail(name);
         readMessageRepository.updateRead(readMessageWS.getMess_id(), readMessageWS.getReadDate(), readMessageWS.getConv_id(), user.getId());
-//        ReadMessageDTO readMessageDTO = readMessageRepository.findById(readMessageWS.getConv_id(), user.getId());
-//        readMessageDTO.setReadDate(readMessageWS.getReadDate());
-//        readMessageDTO.setMess_id(readMessageWS.getMess_id());
-//
-//        readMessageRepository.saveAndFlush(readMessageDTO);
     }
 }

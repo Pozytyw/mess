@@ -67,10 +67,6 @@
     width: 100%;
 }
 
-.read{
-    color: var(--cloud-color);
-}
-
 .post{
     text-align: right;
 }
@@ -91,6 +87,12 @@
     background-color: var(--cloud-color);
     font-size: 2.25vh;
 }
+
+/*notRead*/
+.notRead{
+    background-color: #43516b !important;
+}
+
 
 /*small devices responsibility*/
 @media screen and (min-width : 768px) and (max-width : 1024px) {

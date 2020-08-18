@@ -14,8 +14,8 @@ import java.util.List;
 @Repository("readMessageRepository")
 public interface ReadMessageRepository extends JpaRepository<ReadMessageDTO, Conv_userId> {
 
-    @Query(value = "select * from conv_user where conv_id = :conv_id", nativeQuery = true)
-    List<ReadMessageDTO> findByConv_id(@Param("conv_id") long conv_id);
+    @Query(value = "select * from conv_user where conv_id = :conv_id and user_id <> :user_id", nativeQuery = true)
+    List<ReadMessageDTO> findByConv_id(@Param("conv_id") long conv_id, @Param("user_id") long user_id);
 
     @Query(value = "select * from conv_user where conv_id = :conv_id and user_id = :user_id", nativeQuery = true)
     ReadMessageDTO findById(@Param("conv_id") long conv_id, @Param("user_id") long user_id);
