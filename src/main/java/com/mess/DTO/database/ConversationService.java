@@ -12,4 +12,5 @@ public interface ConversationService {
     ConversationDTO saveNewMessage(ConversationDTO conversationDTO, MessageDTO messageDTO);
     List<ConversationDTO> findConversationByRegexp(@Param("regexp") String regexp, @Param("user_id") Long user_id);
     ConversationDTO saveAndFlush(ConversationDTO conversationDTO);
+    Optional<ConversationDTO> getTalk2Users(long id, long id1);
 }

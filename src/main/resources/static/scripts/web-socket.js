@@ -122,6 +122,9 @@ function showUsers(foundList){
 }
 
 function newConv(user_id){
+    $(".nav .found").html("");
+    $(".search input").val("");
+
     stompClient.send("/newMessage/new_talk", {}, user_id);
 }
 
@@ -135,12 +138,23 @@ function addConv(conv_id, name){
             div += "<span>" + name + "</span>";
         div += "</div>"
     div += "</div>"
+
     //append div to conversations list
-    $(".conversations_list").append(div);
+    $( ".conversations_list" ).append(div);
+
+    div = "";
+    div += "<div id="+conv_id+" class='conv'>";
+    div += "</div>";
+    //append div to messageArea
+    $( ".messageArea" ).append(div);
 
     //set icon height to width
     var cw = $( ".conversation .icon" ).width();
-    $( ".conversation .icon" ).css({'height':cw+'px'});
+    var newConv = $( ".conversation .icon" ).css({'height':cw+'px'});
+
+    newConv.click(function (event){
+        showConv(conv_id);
+    });
 }
 
 function addMessage(message, id, type, mess_id) {

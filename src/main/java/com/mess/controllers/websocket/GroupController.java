@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Controller
@@ -34,6 +35,11 @@ public class GroupController {
         String email2 = userService.findUserById(user_id).get().getEmail();
         UserDTO authUser = userService.findUserByEmail(email);
         UserDTO groupUser = userService.findUserByEmail(email2);
+
+        //if talk 2 users already exist
+        Optional<ConversationDTO> talk = conversationService.getTalk2Users(authUser.getId(), groupUser.getId());
+        if(!talk.isEmpty())
+            return;
 
         //create new conversation
         ConversationDTO conversation = new ConversationDTO();

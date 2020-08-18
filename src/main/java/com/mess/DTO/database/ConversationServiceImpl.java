@@ -50,4 +50,9 @@ public class ConversationServiceImpl implements ConversationService{
     public ConversationDTO saveAndFlush(ConversationDTO conversationDTO) {
         return convRepository.saveAndFlush(conversationDTO);
     }
+
+    @Override
+    public Optional<ConversationDTO> getTalk2Users(long user_id1, long user_id2) {
+        return convRepository.getTalk2Users(user_id1, user_id2);
+    }
 }

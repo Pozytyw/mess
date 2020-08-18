@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository("convRepository")
 public interface ConvRepository extends JpaRepository<ConversationDTO, Long> {
@@ -35,7 +36,7 @@ public interface ConvRepository extends JpaRepository<ConversationDTO, Long> {
             "WHERE\n" +
             "    conv_user.user_id = :id2 and conversation.is_group = 0;"
             , nativeQuery = true)
-    List<ConversationDTO> getTalk2Users(@Param("id1") Long id1, @Param("id2") Long id2);
+    Optional<ConversationDTO> getTalk2Users(@Param("id1") Long id1, @Param("id2") Long id2);
 
     @Query(value =
             "SELECT \n" +
