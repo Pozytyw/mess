@@ -34,7 +34,7 @@ function connect() {
             //subscribe for updating messages
             messageHandler = stompClient.subscribe('/getter/message/'+token.token, function (message) {
                 var message = JSON.parse(message.body);
-                addMessage(message.message, message.conversationId, "get");
+                addMessage(message.message, message.conversationId, "get", message.mess_id);
 
                 //if conversation is open
                 if(conversationId == message.conversationId){
@@ -108,7 +108,7 @@ function sendMessage() {
     message = {'sender': "n/a", 'conversationId' : conversationId,'message': message};//create json object to send
 
     stompClient.send("/newMessage/toUser", {}, JSON.stringify(message));
-    addMessage(message.message, conversationId, "post");
+    addMessage(message.message, conversationId, "post", 0);
 }
 
 function showUsers(foundList){
@@ -143,13 +143,13 @@ function addConv(conv_id, name){
     $( ".conversation .icon" ).css({'height':cw+'px'});
 }
 
-function addMessage(message, id, type) {
+function addMessage(message, id, type, mess_id) {
     var messageArea = $("#messageArea");
     var convArea = messageArea.find( "#"+id );
     if(type == "post"){
-        convArea.append("<div class='"+type+"'><span class='notRead'>" + message + "</span></div>");//add message to message area
+        convArea.append("<div class='"+type+"'><span class='notRead' id="+mess_id+">" + message + "</span></div>");//add message to message area
     }else{
-        convArea.append("<div class='"+type+"'><span>" + message + "</span></div>");//add message to message area
+        convArea.append("<div class='"+type+"'><span id="+mess_id+">" + message + "</span></div>");//add message to message area
     }
     messageArea.scrollTop(messageArea[0].scrollHeight);//scroll to end
 }

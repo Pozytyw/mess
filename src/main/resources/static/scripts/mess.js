@@ -30,4 +30,4 @@ $( window ).resize(function() {
     //set icon height to width
     var cw = $( ".conversation .icon" ).width();
     $( ".conversation .icon" ).css({'height':cw+'px'});
-}
+});
