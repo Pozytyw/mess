@@ -199,11 +199,12 @@ body *{
 }
 
 /*small devices responsibility*/
-@media screen and (min-width : 768px) and (max-width : 1024px) {
+@media screen and (max-width : 1024px) {
     /*mess main container*/
     .mess{
         width: 95%;
         margin-left: 2.5%;
+        height: 85vh;
     }
     /*my profile*/
     .nav .profile{

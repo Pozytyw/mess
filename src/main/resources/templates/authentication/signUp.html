@@ -8,32 +8,37 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/styles/signUp.css} ">
+
+    <meta
+            name='viewport'
+            content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
+    />
 </head>
 <body>
 <div class="container mt-5">
     <form class="form-horizontal" role="form" method="POST" th:action="@{/signUp}" th:object="${userForm}">
         <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
+            <div class="col-md-12 col-lg-3"></div>
+            <div class="col-md-12 col-lg-6">
                 <div class="alert alert-success" role="alert" th:if="${msg}" th:utext="${msg}">
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
+            <div class="col-md-12 col-lg-3"></div>
+            <div class="col-md-12 col-lg-6">
                 <h2>Register New User</h2>
                 <hr>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3 field-label-responsive">
+            <div class="col-md-12 col-lg-3 field-label-responsive">
                 <label for="username">Username</label>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12 col-lg-6">
                 <div class="form-group">
                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                        <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-user"></i></div>
+                        <div class="input-group-addon mr-1" style="width: 2.6rem"><i class="fa fa-user"></i></div>
                         <input type="text" th:field="*{username}" class="form-control" id="username"
                                placeholder="Username" required autofocus>
                     </div>
@@ -41,19 +46,19 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3 field-label-responsive">
+            <div class="col-md-12 col-lg-3 field-label-responsive">
                 <label for="email">Email</label>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12 col-lg-6">
                 <div class="form-group">
                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                        <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-at"></i></div>
+                        <div class="input-group-addon mr-1" style="width: 2.6rem"><i class="fa fa-at"></i></div>
                         <input type="text" th:field="*{email}" class="form-control" id="email"
                                placeholder="username@mail.com" required autofocus>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-12 col-lg-3">
                 <div class="form-control-feedback">
                          <span class="text-danger align-middle" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
                          </span>
@@ -61,19 +66,19 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3 field-label-responsive">
+            <div class="col-md-12 col-lg-3 field-label-responsive">
                 <label for="password">Password</label>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12 col-lg-6">
                 <div class="form-group has-danger">
                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                        <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-key"></i></div>
+                        <div class="input-group-addon mr-1" style="width: 2.6rem"><i class="fa fa-key"></i></div>
                         <input type="password" th:field="*{password}" class="form-control" id="password"
                                placeholder="Password" required>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-12 col-lg-3">
                 <div class="form-control-feedback">
                          <span class="text-danger align-middle" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
                          </span>
@@ -81,19 +86,19 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3 field-label-responsive">
+            <div class="col-md-12 col-lg-3 field-label-responsive">
                 <label for="confirmPassword">Confirm Password</label>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12 col-lg-6">
                 <div class="form-group">
                     <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                        <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-key"></i></div>
+                        <div class="input-group-addon mr-1" style="width: 2.6rem"><i class="fa fa-key"></i></div>
                         <input type="password" th:field="*{confirmPassword}" class="form-control" id="confirmPassword"
                                placeholder="Confirm Password" required autofocus>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-12 col-lg-3">
                 <div class="form-control-feedback">
                          <span class="text-danger align-middle" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}">
                          </span>
@@ -101,10 +106,17 @@
             </div>
         </div>
         <div class="row mt-3">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
-                <button type="submit" class="btn">Register</button>
+            <div class="col-md-12 col-lg-3"></div>
+            <div class="col-md-12 col-lg-6">
+                <button type="submit" class="w-100 btn">Register</button>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-lg-3"></div>
+            <div class="col-md-2 col-lg-6">
+                <a th:href="@{/login}">Login</a>
+            </div>
+            <div class="col-md-5"></div>
         </div>
     </form>
 </div>

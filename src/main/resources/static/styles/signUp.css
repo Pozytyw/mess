@@ -15,11 +15,11 @@ body{
     font-size: 1.75vh;
 }
 
-@media only screen and (max-width: 600px) {
-    body {
+@media screen and (max-width : 1024px) {
+    body * {
         font-size: 2.5vh;
     }
-    input{
-        font-size: 2.5vh;
+    button {
+        font-size: 3vh !important;
     }
 }
