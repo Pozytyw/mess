@@ -157,6 +157,11 @@ function addConv(conv_id, name){
     });
 }
 
+function alertNewMessage(conv_id){
+    var conversation = $( ".conversation[id="+conv_id+"]" );
+    conversation.find( ".icon" ).addClass("alert")//mark as "new message"
+}
+
 function addMessage(message, id, type, mess_id) {
     var messageArea = $("#messageArea");
     var convArea = messageArea.find( "#"+id );
@@ -166,6 +171,10 @@ function addMessage(message, id, type, mess_id) {
         convArea.append("<div class='"+type+"'><span id="+mess_id+">" + message + "</span></div>");//add message to message area
     }
     messageArea.scrollTop(messageArea[0].scrollHeight);//scroll to end
+
+    //if new message is get message
+    if(type == "get")
+        alertNewMessage(id);
 }
 
 //hide all conversation
@@ -202,6 +211,10 @@ function showConv(conv_id){
     //send "readMessage"
     var conversation = $( "div[id=" + conv_id + "]" );
     var lastGetSpan = conversation.find( ".get" ).last().find( "span" )[0]//get last get mess_id
+
+    //remove alert class from clicked profile
+    var conversation = $( ".conversation[id="+conv_id+"]" );
+    conversation.find( ".icon" ).removeClass("alert")//remove class alert
 
     if(lastGetSpan != null){
         if(!lastGetSpan.read){//wasn't read in this session
