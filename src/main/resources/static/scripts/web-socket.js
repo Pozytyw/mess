@@ -1,6 +1,7 @@
 var stompClient = null;
 var conversationId = null;
 var lastSearch = null;
+var auth_name = null;
 
 function connect() {
     var socket = new SockJS('/handshake');
@@ -20,6 +21,7 @@ function connect() {
         //subscribe for updating tokens
         stompClient.subscribe('/user/getter/token', function (token) {
             var token = JSON.parse(token.body);
+            auth_name = token.email;
 
             //unsubscribe already exit message handler
             if(messageHandler != null)
@@ -34,7 +36,7 @@ function connect() {
             //subscribe for updating messages
             messageHandler = stompClient.subscribe('/getter/message/'+token.token, function (message) {
                 var message = JSON.parse(message.body);
-                addMessage(message.message, message.conversationId, "get", message.mess_id);
+                addMessage(message.message, message.conversationId, "get", message.mess_id, message.sender);
 
                 //if conversation is open
                 if(conversationId == message.conversationId){
@@ -162,11 +164,24 @@ function alertNewMessage(conv_id){
     conversation.find( ".icon" ).addClass("alert")//mark as "new message"
 }
 
-function addMessage(message, id, type, mess_id) {
+function addMessage(message, id, type, mess_id, sender) {
     var messageArea = $("#messageArea");
     var convArea = messageArea.find( "#"+id );
+
+    if(sender == auth_name){//callback
+        var messagePostList = convArea.find(".post");
+        //find callback message
+        for(elem of messagePostList){
+            let messageText = elem.getElementsByTagName("span")[0].innerText//get message text from post div
+            if(messageText == message){
+                messageSpan = elem.getElementsByTagName("span")[0];//get span. Is object is JS object not jquery
+                messageSpan.classList.remove("sending");
+                return;//return to prevent adding post message
+            }
+        }
+    }
     if(type == "post"){
-        convArea.append("<div class='"+type+"'><span class='notRead' id="+mess_id+">" + message + "</span></div>");//add message to message area
+        convArea.append("<div class='"+type+"'><span class='sending notRead' id="+mess_id+">" + message + "</span></div>");//add message to message area
     }else{
         convArea.append("<div class='"+type+"'><span id="+mess_id+">" + message + "</span></div>");//add message to message area
     }

@@ -19,8 +19,6 @@ public class MessageTemplate {
 
     //send message to all users in list
     public void sendMessage(MessageWS messageWS, List<String> emails){
-        //remove sender from email
-        emails.remove(messageWS.getSender());
         //destination for sending message
         String destination = "/getter/message/";
         sendToUsersDestination(destination, emails, messageWS);

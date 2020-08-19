@@ -93,6 +93,9 @@
     background-color: #43516b !important;
 }
 
+.sending{
+    background-color: #3f444d !important;
+}
 
 /*small devices responsibility*/
 @media screen and (max-width : 1024px) {
