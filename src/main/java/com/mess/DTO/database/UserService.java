@@ -8,4 +8,5 @@ public interface UserService {
     List<UserDTO> findUserByEmails(String[] emails);
     Optional<UserDTO> findUserById(Long id);
     void saveUser(UserForm userForm);
+    void saveAndFlush(UserDTO userDTO);
 }

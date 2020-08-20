@@ -1,6 +1,5 @@
 // on window load
 $( window ).on('load', function () {
-
     $( ".search input" ).focus(function () {
         $( ".found" ).css("animation-name","boardAnimation")
     });
@@ -17,8 +16,14 @@ $( window ).on('load', function () {
     });
 
     //set icon height to width
-    var cw = $( ".conversation .icon" ).width();
-    $( ".conversation .icon" ).css({'height':cw+'px'});
+    //for all element with .auto_height class
+    $( ".auto_height" ).each(function (index){
+        var cw = $(this).width();
+        $(this).css({'height':cw+'px'});
+    })
+
+    //on load hide settings
+    $( ".settings" ).hide();
 
     //prevent find input form
     $(".search form").on('submit', function (e) {
@@ -28,6 +33,9 @@ $( window ).on('load', function () {
 
 $( window ).resize(function() {
     //set icon height to width
-    var cw = $( ".conversation .icon" ).width();
-    $( ".conversation .icon" ).css({'height':cw+'px'});
+    //for all element with .auto_height class
+    $( ".auto_height" ).each(function (index){
+        var cw = $(this).width();
+        $(this).css({'height':cw+'px'});
+    })
 });

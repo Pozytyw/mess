@@ -25,6 +25,9 @@ public class UserDTO {
     @Column(name = "active")
     private int active;
 
+    @Column(name = "img_src")
+    private String img_src;
+
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name="user_roles", joinColumns=@JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="role_id"))
     private Set<RoleDTO> roles;
@@ -77,4 +80,15 @@ public class UserDTO {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public String getImg_src() {
+        return img_src;
+    }
+
+    public void setImg_src(String img_src) {
+        this.img_src = img_src;
+    }
 }

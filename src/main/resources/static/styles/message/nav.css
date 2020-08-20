@@ -47,8 +47,8 @@ body *{
     background-color: #000826;
     border-radius: 25px;
     margin-top: 1vh;
-    margin-left: 37.5%
-
+    margin-left: 37.5%;
+    position: relative;
 }
 
 /*my profile*/

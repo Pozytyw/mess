@@ -7,11 +7,12 @@
     <link rel="stylesheet" th:href="@{/webjars/font-awesome/5.13.1/css/all.css}">
     <link rel="stylesheet" th:href="@{/styles/message/nav.css} ">
     <link rel="stylesheet" th:href="@{/styles/message/conversations.css} ">
+    <link rel="stylesheet" th:href="@{/styles/message/settings.css} ">
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
     <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <script type="text/javascript" th:src="@{/scripts/web-socket.js}"></script>
     <script type="text/javascript" th:src="@{/scripts/mess.js}"></script>
+    <script type="text/javascript" th:src="@{/scripts/web-socket.js}"></script>
     <script type="text/javascript" th:src="@{/scripts/switch.js}"></script>
 
     <meta
@@ -25,7 +26,7 @@
         <div class="nav">
             <div class="profile">
                 <div class="icon">
-                    <img th:src="@{/images/icon.jpeg}"/>
+                    <img th:src="@{${user.img_src}}"/>
                 </div>
                 <div class="name">
                     <span th:text="${user.username}"></span>
@@ -40,14 +41,13 @@
                     <input type="text" id="search" placeholder="Search: ">
                 </form>
                 <div class="found">
-
                 </div>
             </div>
             <div class="conversations_list">
                 <th:block th:each="conversation : *{conversations}">
                     <div class="conversation" th:id="${conversation.id}">
-                        <div class="icon">
-                            <img th:src="@{/images/img.png}"/>
+                        <div class="icon auto_height">
+                            <img th:src="@{/images/icon.jpeg}"/>
                         </div>
                         <div class="name">
                             <span th:if="${conversation.isGroup()}"th:text="${conversation.name}"></span>
@@ -57,7 +57,33 @@
                 </th:block>
             </div>
         </div>
-        <!--nav end-->
+        <!-- nav end -->
+        <!-- settings start -->
+        <div class="settings">
+            <div class="close_settings"><i class="far fa-times-circle"></i></div>
+            <div class="elem">
+                <div class="icon auto_height left">
+                    <img th:src="@{/images/icon.jpeg}"/>
+                </div>
+                <div class="upload left">
+                    <form method="POST" enctype="multipart/form-data" th:action="@{/update_icon}">
+                        <input onchange="if(this.value != null) $(this).parent().submit()" type="file" accept="image/*" name="file" id="file" class="inputfile" />
+                        <label for="file">Upload new icon</label>
+                    </form>
+                </div>
+            </div>
+            <div class="elem name">
+                <form method="POST" th:action="@{/update_username}">
+                    <label for="username">Change username</label>
+                    <input id="username" name="username" type="text" th:value="${user.username}">
+                    <div onclick="$(this).parent().submit();" class="edit">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- settings end -->
+        <!-- conversations box -->
         <div class="conversations_box">
             <div class="back_icon">
                 <i class="fas fa-chevron-circle-left"></i>

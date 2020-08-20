@@ -72,4 +72,9 @@ public class UserServiceImpl implements UserService {
         //save new conversation
         conversationService.saveAndFlush(conversationDTO);
     }
+
+    @Override
+    public void saveAndFlush(UserDTO userDTO) {
+        userRepository.saveAndFlush(userDTO);
+    }
 }

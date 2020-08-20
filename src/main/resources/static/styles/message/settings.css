@@ -1,0 +1,119 @@
+
+.settings{
+    width: 92%;
+    height: 85%;
+    background-color: #000826;
+    opacity: 92%;
+    position: absolute;
+    bottom: 5%;
+    left: 4%;
+    z-index: 2;
+    border-radius: 15px;
+    box-shadow: 5px 5px 20px 10px black;
+}
+
+.close_settings i{
+    font-size: 30px;
+    color: var(--text-color);
+    transition: 0.5s;
+}
+
+.close_settings:hover i{
+    transform: rotate(65deg);
+}
+
+.close_settings{
+    top: 1vh;
+    right: 1vh;
+    z-index: 10;
+    position: absolute;
+    cursor: pointer;
+}
+
+.settings .elem{
+    margin-top: 2vh;
+    margin-left: 2%;
+    width: 96%;
+    display: inline-block;
+    position: relative;
+}
+
+.settings .name{
+    font-size: 3vh;
+}
+
+.settings .icon{
+    width: 20%;
+    border-radius: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.settings .upload{
+    width: 75%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    text-align: center;
+}
+
+/*hide input type file*/
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+/*css for label input type file*/
+.upload label{
+    font-size: 2.25vh;
+    background-color: #6e1d1d;
+    padding: 2px 8px 2px 8px;
+    border-radius: 15px;
+}
+
+.upload label:hover {
+    cursor: pointer;
+    background-color: #d11b1b;
+}
+
+.elem.name{
+    text-align: center;
+    margin-left: 15%;
+    width: 75%;
+}
+
+.elem.name label{
+    font-size: 2.25vh;
+}
+
+.name input{
+    background: transparent;
+    border-radius: 15px;
+    border-bottom-right-radius: 0;
+    font-size: 2.50vh;
+    width: 87%;
+    padding: 0 10% 0 3%;
+    text-align: center;
+}
+
+.name .edit{
+    position: absolute;
+    z-index: 10;
+    cursor: pointer;
+    width: 10%;
+    bottom: 0;
+    right: 0;
+}
+
+.edit i{
+
+}
+
+.left{
+    float: left;
+}
